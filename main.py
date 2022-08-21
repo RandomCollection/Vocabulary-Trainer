@@ -170,13 +170,6 @@ Screen:
             AnchorLayout:
                 anchor_x: "left"
                 size_hint_y: None
-                height: avatar.height
-
-                Image:
-                    id: avatar
-                    size_hint: None, None
-                    size: "56dp", "56dp"
-                    source: "app.png"
 
             MDLabel:
                 text: "Vocabulary Trainer"
