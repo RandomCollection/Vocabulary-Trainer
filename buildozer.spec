@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Voc Trainer
+title = vocapp
 
 # (str) Package name
 package.name = vocapp
