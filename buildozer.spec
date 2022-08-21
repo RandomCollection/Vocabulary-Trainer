@@ -7,7 +7,7 @@ title = vocapp
 package.name = vocapp
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = dev.vocapp
+package.domain = org.vocapp
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -36,7 +36,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy==2.0.0, https://github.com/kivymd/KivyMD/archive/master.zip,sdl2_ttf==2.0.15,pillow,android
+requirements = python3,kivy==2.0.0,kivymd==0.104.2,pillow,sdl2_ttf==2.0.15,argparse
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
