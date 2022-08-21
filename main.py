@@ -157,7 +157,6 @@ class MainApp(MDApp):
 	in_class = ObjectProperty(None)
 
 	def build(self):
-		Window.size = [300, 600]
 		self.theme_cls.primary_palette = "Teal"
 		self.theme_cls.primary_hue = "700"
 		self.theme_cls.theme_style = "Light"
