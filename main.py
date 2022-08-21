@@ -20,10 +20,6 @@ Screen:
 
     in_class: text
 
-    canvas.before:
-        Color:
-            rgba: (0.5, 0.3, 0.2, 1)
-
     BoxLayout:
 
         orientation: "vertical"
