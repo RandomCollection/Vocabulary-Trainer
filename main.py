@@ -255,6 +255,7 @@ class VocabularyTrainer(MDApp):
 			german_in_use = [german[i] for i in idxs]
 		else:
 			# worda = WORDS.copy()
+			idxs = [e for i, e in enumerate(category)]
 			spanish_in_use = spanish.copy()
 			german_in_use = german.copy()
 		global n
