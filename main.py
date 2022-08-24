@@ -9,7 +9,6 @@
 
 # import pandas as pd
 import random
-import webbrowser
 
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
@@ -376,10 +375,10 @@ class VocabularyTrainer(MDApp):
 	# SCREEN 3 - ABOUT -------------------------------------------------------------------------------------------------
 
 	def open_link_1(self):
-		webbrowser.open("https://github.com/RandomCollection")
+		pass
 
 	def open_link_2(self):
-		webbrowser.open("https://randomcollection.github.io/")
+		pass
 
 
 VocabularyTrainer().run()
