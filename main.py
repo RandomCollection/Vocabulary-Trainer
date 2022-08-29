@@ -1,5 +1,4 @@
 import random
-import webbrowser
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -318,7 +317,7 @@ class VocabularyTrainer(MDApp):
 	# SCREEN 3 - ABOUT -------------------------------------------------------------------------------------------------
 
 	def open_link(self, link: str):
-		webbrowser.open(url=link)
+		pass
 
 	# BUILD ------------------------------------------------------------------------------------------------------------
 
