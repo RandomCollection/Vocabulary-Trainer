@@ -162,14 +162,7 @@ Screen:
             AnchorLayout:
                 anchor_x: "left"
                 size_hint_y: None
-                height: img.height
-
-                Image:
-                    id: img
-                    size_hint: None, None
-                    size: "56dp", "56dp"
-                    source: "img.png"
-
+           
             MDLabel:
                 text: "Vocabulary Trainer"
                 font_style: "Button"
