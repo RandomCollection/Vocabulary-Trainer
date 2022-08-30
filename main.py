@@ -250,7 +250,7 @@ class VocabularyTrainer(MDApp):
 		self.theme_cls.primary_palette = "Teal"
 		self.theme_cls.primary_hue = "700"
 		self.theme_cls.theme_style = "Light"
-		self.screen = Builder.load_file("main.kv")
+		self.screen = Builder.load_string(KV)
 		menu_items = [
 			{
 				"text": f"{category}",
