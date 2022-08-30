@@ -1,4 +1,5 @@
 import random
+import webbrowser
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -161,7 +162,14 @@ Screen:
             AnchorLayout:
                 anchor_x: "left"
                 size_hint_y: None
-           
+                height: img.height
+
+                Image:
+                    id: img
+                    size_hint: None, None
+                    size: "56dp", "56dp"
+                    source: "img.png"
+
             MDLabel:
                 text: "Vocabulary Trainer"
                 font_style: "Button"
@@ -250,7 +258,7 @@ class VocabularyTrainer(MDApp):
 		self.theme_cls.primary_palette = "Teal"
 		self.theme_cls.primary_hue = "700"
 		self.theme_cls.theme_style = "Light"
-		self.screen = Builder.load_string(KV)
+		self.screen = Builder.load_string(KV)  # TODO: adjust this when copying to GitHub
 		menu_items = [
 			{
 				"text": f"{category}",
@@ -317,7 +325,7 @@ class VocabularyTrainer(MDApp):
 	# SCREEN 3 - ABOUT -------------------------------------------------------------------------------------------------
 
 	def open_link(self, link: str):
-		pass
+		webbrowser.open(url=link)
 
 	# BUILD ------------------------------------------------------------------------------------------------------------
 
@@ -326,3 +334,4 @@ class VocabularyTrainer(MDApp):
 
 
 VocabularyTrainer().run()
+
