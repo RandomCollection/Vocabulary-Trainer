@@ -1,0 +1,38 @@
+{
+    "el animal": {
+        "TRANS": "das Tier",
+        "CATEGORY": "ANIMAL",
+        "LANGUAGE": "ES",
+        "LEVEL": 1
+    },
+    "el caballo": {
+        "TRANS": "das Pferd",
+        "CATEGORY": "ANIMAL",
+        "LANGUAGE": "ES",
+        "LEVEL": 1
+    },
+    "el perro": {
+        "TRANS": "der Hund",
+        "CATEGORY": "ANIMAL",
+        "LANGUAGE": "ES",
+        "LEVEL": 1
+    },
+    "das Tier": {
+        "TRANS": "el animal",
+        "CATEGORY": "ANIMAL",
+        "LANGUAGE": "DE",
+        "LEVEL": 1
+    },
+    "das Pferd": {
+        "TRANS": "el caballo",
+        "CATEGORY": "ANIMAL",
+        "LANGUAGE": "DE",
+        "LEVEL": 1
+    },
+    "der Hund": {
+        "TRANS": "el perro",
+        "CATEGORY": "ANIMAL",
+        "LANGUAGE": "DE",
+        "LEVEL": 1
+    }
+}
