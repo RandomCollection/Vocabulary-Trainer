@@ -13,7 +13,7 @@ package.domain = dev.vocabulary
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = json, kv, png, py
+source.include_exts = db, kv, png, py
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
