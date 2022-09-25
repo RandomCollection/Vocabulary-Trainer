@@ -16,6 +16,8 @@ from kivy.properties import ObjectProperty
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
 
+from database import Database
+
 KV = r"""
 Screen:
 
@@ -324,7 +326,7 @@ colors = {
 
 # GLOBAL VARIABLES #####################################################################################################
 
-
+db = Database()
 # FUNCTIONS ############################################################################################################
 
 def language_setting(mode: str) -> (str, str):
