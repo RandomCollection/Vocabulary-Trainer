@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = vocabulary
+title = Vocabulary
 
 # (str) Package name
 package.name = vocabulary
@@ -13,7 +13,7 @@ package.domain = dev.vocabulary
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = db, kv, png, py, svg
+source.include_exts = db, kv, png, py
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -39,10 +39,10 @@ requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, 
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/icon.svg
+presplash.filename = %(source.dir)s/img.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/icon.svg
+icon.filename = %(source.dir)s/img.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
