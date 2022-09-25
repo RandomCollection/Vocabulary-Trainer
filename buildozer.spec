@@ -13,7 +13,7 @@ package.domain = dev.vocabulary
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = db, kv, png, py
+source.include_exts = db, kv, png, py, svg
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -32,17 +32,17 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, sqlite3, pillow, android
+requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, sqlite3, android
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/img.png
+presplash.filename = %(source.dir)s/img.svg
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/img.png
+icon.filename = %(source.dir)s/img.svg
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
