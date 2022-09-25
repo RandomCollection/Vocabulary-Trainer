@@ -3,7 +3,7 @@
 # DIRECTORY:    <masked>
 # DATE:         2022-08-21
 # AUTHOR:       RandomCollection
-# DESCRIPTION:  See https://github.com/RandomCollection/Vocabulary-Trainer.
+# DESCRIPTION:  See https://github.com/RandomCollection/Vocabulary-Trainer..
 
 # LIBRARIES ############################################################################################################
 
