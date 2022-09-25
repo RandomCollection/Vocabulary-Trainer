@@ -15,6 +15,7 @@ from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
+from kivy.utils import platform
 
 if platform == "android":
     from android.permissions import request_permissions, Permission
