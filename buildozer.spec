@@ -39,10 +39,10 @@ requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, 
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/img.svg
+presplash.filename = %(source.dir)s/icon.svg
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/img.svg
+icon.filename = %(source.dir)s/icon.svg
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
