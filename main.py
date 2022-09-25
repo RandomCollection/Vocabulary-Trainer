@@ -437,7 +437,7 @@ class VocabularyTrainer(MDApp):
 		return "f"
 
 	def reset_level(self):
-		pass
+		db.reset_level()
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
