@@ -1,3 +1,12 @@
+# MODULE:       main.py
+# VERSION:      1.0
+# DIRECTORY:    <masked>
+# DATE:         2022-08-21
+# AUTHOR:       RandomCollection
+# DESCRIPTION:  See https://github.com/RandomCollection/Vocabulary-Trainer.
+
+# LIBRARIES ############################################################################################################
+
 import random
 import webbrowser
 
@@ -6,6 +15,8 @@ from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
+
+from database import Database
 
 KV = r"""
 Screen:
@@ -30,7 +41,7 @@ Screen:
 
             Screen:
 
-                name: "screen_1"
+                name: "home"
 
                 MDLabel:
                     text: "Welcome\n\nto\n\nthe\n\nVocabulary\n\nTrainer!"
@@ -39,7 +50,7 @@ Screen:
 
             Screen:
 
-                name: "screen_2"
+                name: "start"
 
                 MDLabel:
                     text: "Please translate"
@@ -60,7 +71,7 @@ Screen:
                     pos_hint: {"center_x": 0.5, "center_y": 0.65}
                     size_hint_x: None
                     mode: "rectangle"
-                    width: 600
+                    width: 700
 
                 MDLabel:
                     text: ""
@@ -71,16 +82,20 @@ Screen:
                     markup: True
 
                 MDFillRoundFlatButton:
-                    text: "Next"
-                    font_style: "Button"
-                    pos_hint: {"center_x": 0.3, "center_y": 0.45}
-                    on_press: app.next()
-
-                MDFillRoundFlatButton:
                     text: "Check"
                     font_style: "Button"
-                    pos_hint: {"center_x": 0.7, "center_y": 0.45}
+                    pos_hint: {"center_x": 0.3, "center_y": 0.45}
+                    theme_icon_color: "Custom"
+                    md_bg_color: "#6200EE"
                     on_press: app.check()
+
+                MDFillRoundFlatButton:
+                    text: "Next"
+                    font_style: "Button"
+                    pos_hint: {"center_x": 0.7, "center_y": 0.45}
+                    theme_icon_color: "Custom"
+                    md_bg_color: "#6200EE"
+                    on_press: app.next()
 
                 MDLabel:
                     text: "Category: All"
@@ -93,25 +108,74 @@ Screen:
                     id: button_category
                     font_style: "Button"
                     pos_hint: {"center_x": 0.1, "center_y": 0.1}
-                    md_bg_color: app.theme_cls.primary_light
-                    on_release: app.menu.open()
+                    md_bg_color: (0, 0.47, 0.42, 1)
+                    on_release: app.menu_category.open()
+
+                MDLabel:
+                    text: "Level: All"
+                    id: label_level
+                    font_style: "Body1"
+                    pos_hint: {"center_x": 0.75, "center_y": 0.2}
+
+                MDRaisedButton:
+                    text: "Level"
+                    id: button_level
+                    font_style: "Button"
+                    pos_hint: {"center_x": 0.3, "center_y": 0.1}
+                    md_bg_color: (0, 0.47, 0.42, 1)
+                    on_release: app.menu_level.open()
 
                 MDFillRoundFlatButton:
                     text: "Solve"
                     font_style: "Button"
                     pos_hint: {"center_x": 0.5, "center_y": 0.1}
-                    md_bg_color: app.theme_cls.primary_light
+                    theme_icon_color: "Custom"
+                    md_bg_color: "#00796B"
                     on_press: app.solve()
 
                 MDFloatingActionButtonSpeedDial:
                     callback: app.language_setting_callback
                     data: app.language_setting_dict
-                    bg_color_root_button: app.theme_cls.primary_light
                     root_button_anim: True
+                    label_text_color: 1,0,0,1
+                    bg_color_stack_button: 1,0,0,1
+                    bg_color_root_button: 1,0,0,1
+                    color_icon_root_button: 1,0,0,1
+                    color_icon_stack_button: 1,0,0,1
 
             Screen:
 
-                name: "screen_3"
+                name: "statistics"
+
+                MDLabel:
+                    text: app.text_statistics()
+                    id: statistics
+                    font_style: "Body1"
+                    halign: "center"
+                    pos_hint: {"center_y": 0.7}
+
+                MDFillRoundFlatButton:
+                    text: "Reset"
+                    font_style: "Button"
+                    pos_hint: {"center_x": 0.7, "center_y": 0.45}
+                    on_press: app.reset_level()
+
+            Screen:
+
+                name: "how_to"
+
+                MDLabel:
+                    text:
+                        "You can choose between categories and whether you want to translate from Spanish to German or\
+                        vice versa. The initial probability weight of every word is one and doubles or halves when the\
+                        correpsonding word has been solve correctly or incorrectly, respectively."
+                    font_style: "Body1"
+                    halign: "center"
+                    pos_hint: {"center_y": 0.7}
+
+            Screen:
+
+                name: "about"
 
                 MDLabel:
                     text: "This is a RandomCollection production."
@@ -126,14 +190,13 @@ Screen:
                     pos_hint: {"center_y": 0.6}
 
                 MDLabel:
-                    text: "[ref=randomcollection_github]RandomCollection GitHub[/ref]"
+                    text: "[ref=randomcollection_github][u]RandomCollection GitHub[/u][/ref]"
                     font_style: "Body1"
                     halign: "center"
                     pos_hint: {"center_y": 0.5}
                     markup: True
                     theme_text_color: "Custom"
                     text_color: 5/255, 99/255, 193/255, 1
-                    underline: True
                     on_ref_press: app.open_link(link="https://github.com/RandomCollection")
 
                 MDLabel:
@@ -143,14 +206,13 @@ Screen:
                     pos_hint: {"center_y": 0.4}
 
                 MDLabel:
-                    text: "[ref=randomcollection_github_page]RandomCollection GitHub Page[/ref]"
+                    text: "[ref=randomcollection_github_page][u]RandomCollection GitHub Page[/u][/ref][color=000000].[/color]"
                     font_style: "Body1"
                     halign: "center"
                     pos_hint: {"center_y": 0.3}
                     markup: True
                     theme_text_color: "Custom"
                     text_color: 5/255, 99/255, 193/255, 1
-                    underline: True
                     on_ref_press: app.open_link(link="https://randomcollection.github.io/")
 
         MDNavigationDrawer:
@@ -190,139 +252,247 @@ Screen:
                         text: "Home"
                         on_press:
                             navigation_drawer.set_state("close")
-                            screen_manager.current = "screen_1"
+                            screen_manager.current = "home"
                         IconLeftWidget:
-                            icon: "home-circle"
+                            icon: "home"
 
                     OneLineAvatarListItem:
                         text: "Start"
                         on_press:
                             navigation_drawer.set_state("close")
-                            screen_manager.current = "screen_2"
+                            screen_manager.current = "start"
                         IconLeftWidget:
-                            icon: "play-circle"
+                            icon: "play"
+
+                    OneLineAvatarListItem:
+                        text: "Statistics"
+                        on_press:
+                            navigation_drawer.set_state("close")
+                            screen_manager.current = "statistics"
+                        IconLeftWidget:
+                            icon: "chart-bar"
+
+                    OneLineAvatarListItem:
+                        text: "How To"
+                        on_press:
+                            navigation_drawer.set_state("close")
+                            screen_manager.current = "how_to"
+                        IconLeftWidget:
+                            icon: "chat-question"
 
                     OneLineAvatarListItem:
                         text: "About"
                         on_press:
                             navigation_drawer.set_state("close")
-                            screen_manager.current = "screen_3"
+                            screen_manager.current = "about"
                         IconLeftWidget:
-                            icon: "account-circle"
+                            icon: "information"
             Widget:
 """
 
-SPANISH = ['el animal', 'el caballo', 'el perro', 'el pez', 'la vaca', 'adiós', 'el alemán', 'bienvenido', 'el bolígrafo', 'la botella', 'buenas noches', 'buenas tardes', 'buenos días', 'la casa', 'el cepillo', 'el cigarrillo', 'la ciudad', 'el coche', 'cómo estás', 'el cuaderno', 'de nada', 'la gente', 'la gitana', 'el gitano', 'gracias', 'la guerra', 'hasta luego', 'hasta mañana', 'hasta pronto', 'hola', 'el hombre', 'el imbécil', 'el libro', 'mucha suerte', 'muchas gracias', 'mucho gusto', 'la niña', 'el niño', 'la pared', 'pásalo bien', 'por favor', 'qué tal', 'la razón', 'la torre', 'el diente', 'la mano', 'ayer', 'el día', 'domingo', 'hoy', 'jueves', 'lunes', 'mañana', 'martes', 'miércoles', 'sábado', 'la semana', 'viernes', 'la abuela', 'el abuelo', 'amar', 'la amiga', 'el amigo', 'besar', 'la boda', 'casarse', 'el cumpleaños', 'el divorcio', 'la familia', 'la hermana', 'el hermano', 'la hija', 'el hijo', 'la madre', 'el marido', 'el matrimonio', 'la mujer', 'la nieta', 'el nieto', 'la novia', 'el novio', 'el padre', 'querer', 'te quiero', 'la tía', 'el tío', 'la cebolla', 'el chocolate', 'el chorizo', 'la harina', 'el vino', 'la zanahoria', 'el baño', 'la cocina', 'la cuchara', 'el cuchillo', 'la mesa', 'la silla', 'el tenedor', 'el vaso', 'la luna', 'catorce', 'cero', 'cien', 'cinco', 'cincuenta', 'cuarenta', 'cuatro', 'diecinueve', 'dieciocho', 'dieciseis', 'diecisiete', 'diez', 'doce', 'dos', 'mil', 'noventa', 'nueve', 'ochenta', 'ocho', 'once', 'quince', 'seis', 'sesenta', 'setenta', 'siete', 'trece', 'treinta', 'tres', 'uno', 'veinte', 'cómo', 'cuándo', 'cuánto', 'dónde', 'él', 'gordo', 'pero', 'por qué', 'qué', 'quién', 'todo', 'yo', 'beber', 'querer', 'trabajar', 'volar', 'la oferta', 'agotado', 'la panadería', 'el banco', 'el importe', 'el pago', 'barato', 'el céntimo', 'la droguería', 'comprar', 'el mercadillo', 'la garantía', 'usado', 'el sueldo', 'el dinero', 'la caja', 'el dinero suelto', 'gratuito', 'el cliente', 'la clienta', 'el despegue', 'la salida', 'salir', 'llegar', 'la llegada', 'la estancia', 'el mirador', 'el bañador', 'bañarse', 'la estación', 'el andén', 'visitar', 'al autobús', 'la habitación doble', 'la habitación individual', 'la recepción', 'el pasajero', 'el billete', 'el horario', 'el vuelvo', 'el aeropuerte', 'el avión', 'el equipaje', 'el hotel', 'la maleta', 'el mapa', 'el pasaporte', 'el viaje', 'viajar', 'la vuelta', 'la sombra', 'nadar', 'la playa', 'bucear', 'el traje', 'el biquini', 'la blusa', 'el monedero', 'el guante', 'el bolso', 'la camisa', 'el sombrero', 'la chaqueta', 'el vestido', 'la corbata', 'el maquillaje', 'el abrigo', 'el perfume', 'el jersey', 'el paraguas', 'la falda', 'la bufanda', 'el zapato', 'la bota', 'el calectín', 'la camiseta', 'el bolso', 'la ropa interior', 'el cepillo de dientes', 'la manzana', 'la berenjena', 'el aguacate', 'el plátano', 'la pera', 'el panecillo', 'la fresa', 'el café solo', 'la comida', 'el pescado', 'la carne', 'la trucha', 'la gamba', 'la carne de ave', 'la bebida', 'el pepino', 'la carne picada', 'la pechuga de pollo', 'el yogur', 'el café', 'la patata', 'el ajo', 'el salmón', 'la fruta', 'el aceite', 'la naranja', 'el pimiento', 'la pimienta', 'maduro', 'crudo', 'el vino tinto', 'el zumo', 'la sal', 'picante', 'el jamón', 'el bistec', 'el té', 'el atún', 'el tomate', 'la vista', 'el árbol', 'la montaña', 'el rayo', 'la flor', 'el trueno', 'el campo', 'la roca', 'el río', 'la primavera', 'la tormenta', 'el otoño', 'el calor', 'el frío', 'la costa', 'el mar', 'la naturaleza', 'el norte', 'el este', 'la planta', 'la lluvia', 'el verano', 'el sol', 'el sur', 'el valle', 'la temperatura', 'el bosque', 'el agua', 'el oeste', 'el viento', 'el invierno', 'la nube', 'el desierto', 'el comienzo', 'la duración', 'el momento', 'el tiempo', 'por la tarde', 'por la noche', 'la tarde', 'el mediodía', 'la noche', 'el pasado', 'el futuro', 'el reloij', 'la fecha', 'anual', 'el calendario', 'el segundo', 'la hora', 'el fin de semana', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre', 'el cubo de basura', 'lavar', 'la bañera', 'el balcón', 'la escoba', 'los cubiertos', 'la cama', 'el sofá', 'la ducha', 'la entrada', 'el comedor', 'la ventana', 'el telvisor', 'el garaje', 'la casa', 'la puerta de casa', 'la cocina', 'el sótano', 'la almohada', 'la nevera', 'la lámpara', 'limpiar', 'el dormitorio', 'la llave', 'el armario', 'el espejo', 'el enchufe', 'el piso', 'la silla', 'la taza', 'el plato', 'la alfombra', 'el servicio', 'la escalera', 'la puerta', 'la ropa', 'la colada', 'el piso', 'el salón', 'la habitación', 'los animales', 'los caballos', 'los perros', 'los peces', 'las vacas', 'los alemanes', 'los bolígrafos', 'las botellas', 'las casas', 'las ciudades', 'las coches', 'los cuadernos', 'los hombres', 'los imbéciles', 'los libros', 'las paredes', 'los razones', 'las torres', 'los dientes', 'los manos', 'los padres', 'los hermanos', 'las cebollas', 'las zanahorias', 'los baños', 'las cocinas', 'las cucharas', 'los cuchillos', 'las mesas', 'las sillas', 'los tenedores', 'los vasos', 'las lunas', 'las vacaciones', 'las gafas', 'los pantalones', 'los vaqueros', 'las joyas', 'las gafas del sol', 'los fiambres']
-GERMAN = ['das Tier', 'das Pferd', 'der Hund', 'der Fisch', 'die Kuh', 'auf Wiedersehen', 'der Deutsche', 'willkommen', 'der Kugelschreiber', 'die Flasche', 'gute Nacht', 'guten Tag', 'guten Morgen', 'das Haus', 'die Bürste', 'die Zigarette', 'die Stadt', 'das Auto', 'wie geht es dir', 'das Heft', 'gern geschehen', 'die Leute', 'die Zigeunerin', 'der Zigeuner', 'danke', 'der Krieg', 'bis später', 'bis morgen', 'bis dann', 'hallo', 'der Mann', 'der Idiot', 'das Buch', 'viel Glück', 'vielen Dank', 'sehr erfreut', 'das Mädchen', 'der Junge', 'die Wand', 'viel Spaß', 'bitte', "wie geht's", 'der Grund', 'der Turm', 'der Zahn', 'die Hand', 'gestern', 'der Tag', 'Sonntag', 'heute', 'Donnerstag', 'Montag', 'morgen', 'Dienstag', 'Mittwoch', 'Samstag', 'die Woche', 'Freitag', 'die Oma', 'der Opa', 'lieben', 'die Freundin', 'der Freund', 'küssen', 'die Hochzeit', 'heiraten', 'der Geburtstag', 'die Scheidung', 'die Famillie', 'die Schwester', 'der Bruder', 'die Tochter', 'der Sohn', 'die Mutter', 'der Ehemann', 'die Ehe', 'die Frau', 'die Enkelin', 'der Enkel', 'die Freundin', 'der Freund', 'der Vater', 'mögen', 'ich liebe Dich', 'die Tante', 'der Onkel', 'die Zwiebel', 'die Schokolade', 'die Wurst', 'das Mehl', 'der Wein', 'die Karotte', 'das Bad', 'die Küche', 'der Löffel', 'das Messer', 'der Tisch', 'der Stuhl', 'die Gabel', 'das Glas', 'der Mond', 'vierzehn', 'null', 'hundert', 'fünf', 'fünfzig', 'vierzig', 'vier', 'neunzehn', 'achtzehn', 'sechzehn', 'siebzehn', 'zehn', 'zwölf', 'zwei', 'tausend', 'neunzig', 'neun', 'achtzig', 'acht', 'elf', 'fünfzehn', 'sechs', 'sechzig', 'siebzig', 'sieben', 'dreizehn', 'dreißig', 'drei', 'eins', 'zwanzig', 'wie', 'wann', 'wie viel', 'wo', 'er', 'dick', 'aber', 'warum', 'was', 'wer', 'alles', 'ich', 'trinken', 'wollen', 'arbeiten', 'fliegen', 'das Angebot', 'ausverkauft', 'die Bäckerei', 'die Bank', 'der Betrag', 'die Bezahlung', 'billig', 'der Cent', 'die Drogerie', 'einkaufen', 'der Flohmarkt', 'die Garantie', 'gebraucht', 'das Gehalt', 'das Geld', 'die Kasse', 'das Kleingeld', 'kostenlos', 'der Kunde', 'die Kundin', 'der Abflug', 'die Abreise', 'abreisen', 'ankommen', 'die Ankunft', 'der Aufenthalt', 'der Aussichtspunkt', 'die Badehose', 'baden', 'der Bahnhof', 'der Bahnsteig', 'besuchen', 'der Bus', 'das Doppelzimmer', 'das Einzelzimmer', 'die Rezeption', 'der Fahrgast', 'die Fahrkarte', 'der Fahrplan', 'der Flug', 'der Flughafen', 'das Flugzeug', 'das Gepäck', 'das Hotel', 'der Koffer', 'die Landkarte', 'der Pass', 'die Reise', 'reisen', 'die Rückfahrt', 'der Schatten', 'schwimmen', 'der Strand', 'tauchen', 'der Anzug', 'der Bikini', 'die Bluse', 'der Geldbeutel', 'der Handschuh', 'die Handtasche', 'das Hemd', 'der Hut', 'die Jacke', 'das Kleid', 'die Krawatte', 'das Make-Up', 'der Mantel', 'das Parfüm', 'der Pullover', 'der Regenschirm', 'der Rock', 'der Schal', 'der Schuh', 'der Stiefel', 'der Strumpf', 'das T-Shirt', 'die Tasche', 'die Unterwäsche', 'die Zahnbürste', 'der Apfel', 'die Aubergine', 'die Avocado', 'die Banane', 'die Birne', 'das Brötchen', 'die Erdbeere', 'der Espresso', 'das Essen', 'der Fisch', 'das Fleisch', 'die Forelle', 'die Garnele', 'das Geflügel', 'das Getränk', 'die Gurke', 'das Hackfleisch', 'die Hähnchenbrust', 'der Joghurt', 'der Kaffee', 'die Kartoffel', 'der Knoblauch', 'der Lachs', 'das Obst', 'das Öl', 'die Orange', 'die Paprika', 'der Pfeffer', 'reif', 'roh', 'der Rotwein', 'der Saft', 'das Salz', 'scharf', 'der Schinken', 'das Steak', 'der Tee', 'der Thunfisch', 'die Tomate', 'die Aussicht', 'der Baum', 'der Berg', 'der Blitz', 'die Blume', 'der Donner', 'das Feld', 'der Fels', 'der Fluss', 'der Frühling', 'das Gewitter', 'der Herbst', 'die Hitze', 'die Kälte', 'die Küste', 'das Meer', 'die Natur', 'der Norden', 'der Osten', 'die Pflanze', 'der Regen', 'der Sommer', 'die Sonne', 'der Süden', 'das Tal', 'die Temperatur', 'der Wald', 'das Wasser', 'der Westen', 'der Wind', 'der Winter', 'die Wolke', 'die Wüste', 'der Anfang', 'die Dauer', 'der Moment', 'die Zeit', 'abends', 'nachts', 'der Nachmittag', 'der Mittag', 'die Nacht', 'die Vergangenheit', 'die Zukunft', 'die Uhr', 'das Datum', 'jährlich', 'der Kalender', 'die Sekunde', 'die Stunde', 'das Wochenende', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember', 'der Abfalleimer', 'abspülen', 'die Badewanne', 'der Balkon', 'der Besen', 'das Besteck', 'das Bett', 'das Sofa', 'die Dusche', 'der Eingang', 'das Esszimmer', 'das Fenster', 'der Fenseher', 'die Garage', 'das Haus', 'die Haustür', 'der Küche', 'der Keller', 'das Kissen', 'der Kühlschrank', 'die Lampe', 'putzen', 'das Schlafzimmer', 'der Schlüssel', 'der Schrank', 'der Spiegel', 'die Steckdose', 'das Stockwerk', 'der Stuhl', 'die Tasse', 'der Teller', 'der Teppich', 'die Toilette', 'die Treppe', 'die Tür', 'die Kleidung', 'die Wäsche', 'die Wohnung', 'das Wohnzimmer', 'das Zimmer', 'die Tiere', 'die Pferde', 'die Hunde', 'die Fische', 'die Kühe', 'die Deutschen', 'die Kugelschreiber', 'die Flaschen', 'die Häuser', 'die Städte', 'die Autos', 'die Hefte', 'die Männer', 'die Idioten', 'die Bücher', 'die Wände', 'die Gründe', 'die Türme', 'die Zähne', 'die Hände', 'die Eltern', 'die Geschwister', 'die Zwiebeln', 'die Karotten', 'die Bäder', 'die Küchen', 'die Löffel', 'die Messer', 'die Tische', 'die Stühle', 'die Gabeln', 'die Gläser', 'die Monde', 'der Urlaub', 'die Brille', 'die Hose', 'die Jeans', 'der Schmuck', 'die Sonnenbrille', 'der Aufschnitt']
-CATEGORY = ['ANIMAL', 'ANIMAL', 'ANIMAL', 'ANIMAL', 'ANIMAL', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BODY', 'BODY', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FAMILY', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'NATURE', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'VERB', 'VERB', 'VERB', 'VERB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'FOOD', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'FOOD', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'NATURE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'BASIS', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', 'DATE', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'ANIMAL', 'ANIMAL', 'ANIMAL', 'ANIMAL', 'ANIMAL', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BASIS', 'BODY', 'BODY', 'FAMILY', 'FAMILY', 'FOOD', 'FOOD', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'LIVING', 'NATURE', '', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'CLOTHS', 'FOOD']
-
 # CONSTANTS ############################################################################################################
 
-CATEGORY_UNIQUE = [i.capitalize() for i in set(CATEGORY)]
 DICT_LANGUAGE_SETTING = {
 	"Random": "arrow-left-right",
 	"ES -> DE": "arrow-right",
 	"ES <- DE": "arrow-left",
 }
 
+colors = {
+	"Purple": {
+		"200": "#673AB7",
+		"500": "#512DA8",
+		"700": "#311B92",
+	},
+	"Teal": {
+		"200": "#009688",
+		"500": "#00796B",
+		"700": "#004D40",
+	},
+	"Red": {
+		"200": "#C25554",
+		"500": "#C25554",
+		"A700": "#C25554",
+		"700": "#C25554",
+	},
+	"Light": {
+		"StatusBar": "E0E0E0",
+		"AppBar": "#202020",
+		"Background": "#FFFFFF",
+		"CardsDialogs": "#FFFFFF",
+		"FlatButtonDown": "#CCCCCC",
+	},
+}
+
 # GLOBAL VARIABLES #####################################################################################################
 
-language_setting_mode = list(DICT_LANGUAGE_SETTING.keys())[1]
-category_var = ""
+db = Database()
 
 
 # FUNCTIONS ############################################################################################################
 
-def language_setting(mode: str) -> (list, list):
+def language_setting(mode: str) -> (str, str):
 	if mode == list(DICT_LANGUAGE_SETTING.keys())[0]:
 		if random.randint(0, 1) == 0:
-			return SPANISH.copy(), GERMAN.copy()
+			return "ES", "DE"
 		else:
-			return GERMAN.copy(), SPANISH.copy()
+			return "DE", "ES"
 	if mode == list(DICT_LANGUAGE_SETTING.keys())[1]:
-		return SPANISH.copy(), GERMAN.copy()
+		return "ES", "DE"
 	if mode == list(DICT_LANGUAGE_SETTING.keys())[2]:
-		return GERMAN.copy(), SPANISH.copy()
+		return "DE", "ES"
 
 
 # CLASS ################################################################################################################
 
 class VocabularyTrainer(MDApp):
-	# TODO: show a streak
+	# TODO: material design
+	# TODO: context menu to change sensitivity of level adjustments
+	# TODO: close database connection
+
+	# TODO: make a statistics screen with, for example, number of words
+	# TODO: So far the levels are changed globally, i.e. if I want to do category xxx it does not start with all level 1
+	# TODO: but whatever the levels are
+	# TODO: it is important that I press the 'next' button always before the 'check' button
+	# con = sqlite3.connect(database=r"projects\vocabulary-trainer\data.db")
+	# cursor = con.cursor()
+	# con.close()
 
 	in_class = ObjectProperty(None)
 	language_setting_dict = DICT_LANGUAGE_SETTING.copy()
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
-		self.theme_cls.primary_palette = "Teal"
+		# Theme configuration
+		self.theme_cls.colors = colors
+		self.theme_cls.primary_palette = "Purple"
 		self.theme_cls.primary_hue = "700"
+		self.theme_cls.secondary_palette = "Teal"
+		self.theme_cls.secondary_hue = "700"
+		self.theme_cls.accent_palette = "Teal"
 		self.theme_cls.theme_style = "Light"
+		# Builder
 		self.screen = Builder.load_string(KV)  # TODO: adjust this when copying to GitHub
-		menu_items = [
-			{
-				"text": f"{category}",
-				"viewclass": "OneLineListItem",
-				"height": dp(56),
-				"on_release": lambda x=f"{category}": self.callback(x),
-			} for category in ["All"] + CATEGORY_UNIQUE
-		]
-		self.menu = MDDropdownMenu(
+		# Variables
+		self.n = None
+		self.words_in_used = None
+		self.words_out_used = None
+		self.language_in = None
+		self.language_out = None
+		self.language_setting_mode = list(DICT_LANGUAGE_SETTING.keys())[1]
+		self.category_distinct = "('" + "','".join(db.get_distinct_categories()) + "')"
+		self.level_current = None
+		self.level_distinct = "(" + ",".join(db.get_distinct_levels()) + ")"
+		# Dropdown menus
+		self.menu_category = MDDropdownMenu(
 			caller=self.screen.ids.button_category,
-			items=menu_items,
+			items=[
+				{
+					"text": f"{category.capitalize()}",
+					"viewclass": "OneLineListItem",
+					"height": dp(56),
+					"on_release": lambda x=f"{category}": self.callback_category(x),
+				} for category in ["All"] + db.get_distinct_categories()
+			],
+			width_mult=3,
+			max_height=dp(224),
+			background_color=self.theme_cls.primary_light,
+		)
+		self.menu_level = MDDropdownMenu(
+			caller=self.screen.ids.button_level,
+			items=[
+				{
+					"text": f"{level}",
+					"viewclass": "OneLineListItem",
+					"height": dp(56),
+					"on_release": lambda x=f"{level}": self.callback_level(x),
+				} for level in ["All"] + db.get_distinct_levels()
+			],
 			width_mult=3,
 			max_height=dp(224),
 			background_color=self.theme_cls.primary_light,
 		)
 
-	# SCREEN 2 - START -------------------------------------------------------------------------------------------------
-
-	def next(self):
-		global n
-		global words_out_used
-		words_in, words_out = language_setting(mode=language_setting_mode)
-		if category_var != "":
-			idxs = [i for i, e in enumerate(CATEGORY) if e == category_var]
-			words_in_used = [words_in[i] for i in idxs]
-			words_out_used = [words_out[i] for i in idxs]
-		else:
-			idxs = [e for i, e in enumerate(CATEGORY)]
-			words_in_used = words_in.copy()
-			words_out_used = words_out.copy()
-		n = random.randint(0, len(idxs)-1)
-		label = self.root.ids.label_word_in
-		label.text = words_in_used[n]
-		self.root.in_class.text = ""
-		label = self.root.ids.label_word_out
-		label.text = ""
+	# SCREEN "START" ---------------------------------------------------------------------------------------------------
 
 	def check(self):
-		if self.root.in_class.text == words_out_used[n]:
+		if self.root.in_class.text == self.words_out_used[self.n]:
 			label = self.root.ids.label_word_out
 			label.text = "[color=238823]Correct =)[/color]"
+			db.decrease_level(level=self.level_current, word=self.words_in_used[self.n])
 		else:
 			label = self.root.ids.label_word_out
 			label.text = "[color=D2222D]Wrong =([/color]"
+			db.increase_level(level=self.level_current, word=self.words_in_used[self.n])
+
+	def next(self):
+		language_in, language_out = language_setting(mode=self.language_setting_mode)
+		self.words_in_used = [
+			word[0] for word in db.get_words(
+				language=language_in,
+				category=self.category_distinct,
+				level=self.level_distinct
+			)
+		]
+		self.words_out_used = [
+			word[0] for word in db.get_words(
+				language=language_out,
+				category=self.category_distinct,
+				level=self.level_distinct
+			)
+		]
+		words, levels = db.get_words_and_levels(words="('" + "','".join(self.words_in_used) + "')")
+		choice = random.choices(
+			population=words,
+			weights=[round(2**level / sum([2**level for level in levels]), 2) for level in levels]
+		)[0]
+		self.n = words.index(choice)
+		label = self.root.ids.label_word_in
+		label.text = self.words_in_used[self.n]
+		self.root.in_class.text = ""
+		label = self.root.ids.label_word_out
+		label.text = ""
+		self.level_current = db.get_level(word=self.words_in_used[self.n])
 
 	def solve(self):
 		label = self.root.ids.label_word_out
-		label.text = words_out_used[n]
+		label.text = self.words_out_used[self.n]
 
-	def callback(self, instance):
-		global category_var
+	def callback_category(self, instance):
 		if instance == "All":
-			category_var = ""
+			self.category_distinct = "('" + "','".join(db.get_distinct_categories()) + "')"
 		else:
-			category_var = instance.upper()
+			self.category_distinct = f"('{instance.upper()}')"
 		label = self.root.ids.label_category
-		label.text = f"Category: {category_var.capitalize()}"
-		self.menu.dismiss()
+		label.text = f"Category: {instance.capitalize()}"
+		self.menu_category.dismiss()
+
+	def callback_level(self, instance):
+		if instance == "All":
+			self.level_distinct = "(" + ",".join(db.get_distinct_levels()) + ")"
+		else:
+			self.level_distinct = f"({instance})"
+		label = self.root.ids.label_level
+		label.text = f"Level: {instance}"
+		self.menu_level.dismiss()
 
 	def language_setting_callback(self, instance):
-		global language_setting_mode
-		language_setting_mode = [key for key, value in DICT_LANGUAGE_SETTING.items() if value == instance.icon][0]
+		self.language_setting_mode = [key for key, value in DICT_LANGUAGE_SETTING.items() if value == instance.icon][0]
 
-	# SCREEN 3 - ABOUT -------------------------------------------------------------------------------------------------
+	# SCREEN "STATISTICS" ----------------------------------------------------------------------------------------------
+
+	def text_statistics(self):
+		return (
+			f"Currently, there are"
+			f"\n\n- {db.get_number_of_words(language='ES')} words and"
+			f"\n\n- {len(db.get_distinct_categories())} categories"
+			f"\n\navailable."
+		)
+
+	def reset_level(self):
+		db.reset_level()
+
+	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
 	def open_link(self, link: str):
 		webbrowser.open(url=link)
@@ -334,4 +504,3 @@ class VocabularyTrainer(MDApp):
 
 
 VocabularyTrainer().run()
-
