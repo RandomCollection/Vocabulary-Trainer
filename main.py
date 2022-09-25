@@ -3,7 +3,7 @@
 # DIRECTORY:    <masked>
 # DATE:         2022-08-21
 # AUTHOR:       RandomCollection
-# DESCRIPTION:  See https://github.com/RandomCollection/Vocabulary-Trainer.a
+# DESCRIPTION:  See https://github.com/RandomCollection/Vocabulary-Trainer.
 
 # LIBRARIES ############################################################################################################
 
@@ -13,13 +13,13 @@ import webbrowser
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
+from kivy.utils import platform
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
-from kivy.utils import platform
 
 if platform == "android":
-    from android.permissions import request_permissions, Permission
-    request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
+	from android.permissions import request_permissions, Permission
+	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 
 from database import Database
 
@@ -332,6 +332,8 @@ colors = {
 # GLOBAL VARIABLES #####################################################################################################
 
 db = Database()
+
+
 # FUNCTIONS ############################################################################################################
 
 def language_setting(mode: str) -> (str, str):
@@ -383,9 +385,9 @@ class VocabularyTrainer(MDApp):
 		self.language_in = None
 		self.language_out = None
 		self.language_setting_mode = list(DICT_LANGUAGE_SETTING.keys())[1]
-		self.category_distinct = "f"
+		self.category_distinct = "('" + "','".join(db.get_distinct_categories()) + "')"
 		self.level_current = None
-		self.level_distinct = "l"
+		self.level_distinct = "(" + ",".join(db.get_distinct_levels()) + ")"
 		# Dropdown menus
 		self.menu_category = MDDropdownMenu(
 			caller=self.screen.ids.button_category,
@@ -395,7 +397,7 @@ class VocabularyTrainer(MDApp):
 					"viewclass": "OneLineListItem",
 					"height": dp(56),
 					"on_release": lambda x=f"{category}": self.callback_category(x),
-				} for category in ["All"]
+				} for category in ["All"] + db.get_distinct_categories()
 			],
 			width_mult=3,
 			max_height=dp(224),
@@ -409,7 +411,7 @@ class VocabularyTrainer(MDApp):
 					"viewclass": "OneLineListItem",
 					"height": dp(56),
 					"on_release": lambda x=f"{level}": self.callback_level(x),
-				} for level in ["All"]
+				} for level in ["All"] + db.get_distinct_levels()
 			],
 			width_mult=3,
 			max_height=dp(224),
@@ -419,27 +421,78 @@ class VocabularyTrainer(MDApp):
 	# SCREEN "START" ---------------------------------------------------------------------------------------------------
 
 	def check(self):
-		pass
-	
+		if self.root.in_class.text == self.words_out_used[self.n]:
+			label = self.root.ids.label_word_out
+			label.text = "[color=238823]Correct =)[/color]"
+			db.decrease_level(level=self.level_current, word=self.words_in_used[self.n])
+		else:
+			label = self.root.ids.label_word_out
+			label.text = "[color=D2222D]Wrong =([/color]"
+			db.increase_level(level=self.level_current, word=self.words_in_used[self.n])
+
 	def next(self):
-		pass
+		language_in, language_out = language_setting(mode=self.language_setting_mode)
+		self.words_in_used = [
+			word[0] for word in db.get_words(
+				language=language_in,
+				category=self.category_distinct,
+				level=self.level_distinct
+			)
+		]
+		self.words_out_used = [
+			word[0] for word in db.get_words(
+				language=language_out,
+				category=self.category_distinct,
+				level=self.level_distinct
+			)
+		]
+		words, levels = db.get_words_and_levels(words="('" + "','".join(self.words_in_used) + "')")
+		choice = random.choices(
+			population=words,
+			weights=[round(2**level / sum([2**level for level in levels]), 2) for level in levels]
+		)[0]
+		self.n = words.index(choice)
+		label = self.root.ids.label_word_in
+		label.text = self.words_in_used[self.n]
+		self.root.in_class.text = ""
+		label = self.root.ids.label_word_out
+		label.text = ""
+		self.level_current = db.get_level(word=self.words_in_used[self.n])
 
 	def solve(self):
-		pass
+		label = self.root.ids.label_word_out
+		label.text = self.words_out_used[self.n]
 
 	def callback_category(self, instance):
-		pass
+		if instance == "All":
+			self.category_distinct = "('" + "','".join(db.get_distinct_categories()) + "')"
+		else:
+			self.category_distinct = f"('{instance.upper()}')"
+		label = self.root.ids.label_category
+		label.text = f"Category: {instance.capitalize()}"
+		self.menu_category.dismiss()
 
 	def callback_level(self, instance):
-		pass
+		if instance == "All":
+			self.level_distinct = "(" + ",".join(db.get_distinct_levels()) + ")"
+		else:
+			self.level_distinct = f"({instance})"
+		label = self.root.ids.label_level
+		label.text = f"Level: {instance}"
+		self.menu_level.dismiss()
 
 	def language_setting_callback(self, instance):
-		pass
+		self.language_setting_mode = [key for key, value in DICT_LANGUAGE_SETTING.items() if value == instance.icon][0]
 
 	# SCREEN "STATISTICS" ----------------------------------------------------------------------------------------------
 
 	def text_statistics(self):
-		return "f"
+		return (
+			f"Currently, there are"
+			f"\n\n- {db.get_number_of_words(language='ES')} words and"
+			f"\n\n- {len(db.get_distinct_categories())} categories"
+			f"\n\navailable."
+		)
 
 	def reset_level(self):
 		db.reset_level()
