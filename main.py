@@ -24,6 +24,7 @@ if platform == "android":
 
 from database import Database
 
+
 KV = r"""
 Screen:
 
