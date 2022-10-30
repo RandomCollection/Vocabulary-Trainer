@@ -8,7 +8,7 @@
 # LIBRARIES ############################################################################################################
 
 import random
-# import sqlite3
+import sqlite3
 import webbrowser
 
 from kivy.lang import Builder
