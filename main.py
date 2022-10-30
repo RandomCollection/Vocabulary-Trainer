@@ -224,7 +224,7 @@ Screen:
                     text: "2"
                     id: label_sensitivity
                     font_style: "Body1"
-                    pos_hint: {"center_x": 0.8, "center_y": 0.0
+                    pos_hint: {"center_x": 0.8, "center_y": 0.0}
 
                 MDRaisedButton:
                     text: "Sensitivity"
