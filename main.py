@@ -224,13 +224,13 @@ Screen:
                     text: "2"
                     id: label_sensitivity
                     font_style: "Body1"
-                    pos_hint: {"center_x": 0.8, "center_y": 0.1}
+                    pos_hint: {"center_x": 0.8, "center_y": 0.0
 
                 MDRaisedButton:
                     text: "Sensitivity"
                     id: button_sensitivity
                     font_style: "Button"
-                    pos_hint: {"center_x": 0.15, "center_y": 0.1}
+                    pos_hint: {"center_x": 0.15, "center_y": 0.0}
                     theme_text_color: "Custom"
                     md_bg_color: (100/255,255/255,218/255,1)
                     text_color: (0.1/255,0.1/255,0.1/255,1)
