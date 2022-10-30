@@ -8,7 +8,7 @@
 # LIBRARIES ############################################################################################################
 
 import random
-import sqlite3
+# import sqlite3
 import webbrowser
 
 from kivy.lang import Builder
@@ -23,7 +23,6 @@ if platform == "android":
 	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 
 from database import Database
-
 
 KV = r"""
 Screen:
@@ -375,15 +374,35 @@ db = Database()
 # FUNCTIONS ############################################################################################################
 
 def calc_statistics() -> str:
-	pass
+	words = db.get_number_of_words(language='ES')
+	categories = len(db.get_distinct_categories())
+	levels = chr(10).join([f'{cnt[0]:2}: {cnt[1]:,}' for cnt in db.get_count_of_words_per_level()])
+	return (
+		f"The vocabulary trainer contains [b]{words:,} {'word' if words == 1 else 'words'}[/b] in [b]{categories:,} "
+		f"{'category' if categories == 1 else 'categories'}[/b].\n\n"
+		f"The table below gives an overview about the currently existing [b]levels[/b] and corresponding [b]number of "
+		f"words[/b] within. Please note that every word appears twice - once for the Spanish to German translation and "
+		f"once for the German to Spanish translation.\n\n"
+		f"{levels}"
+	)
 
 
 def create_str_from_list(char: list) -> str:
-	pass
+	return "('" + "','".join(char) + "')"
 
 
 def language_setting(mode: str) -> (str, str):
-	pass
+	if mode == list(DICT_LANGUAGE_SETTING.keys())[0]:
+		if random.randint(a=0, b=1) == 0:
+			return "ES", "DE"
+		else:
+			return "DE", "ES"
+	elif mode == list(DICT_LANGUAGE_SETTING.keys())[1]:
+		return "ES", "DE"
+	elif mode == list(DICT_LANGUAGE_SETTING.keys())[2]:
+		return "DE", "ES"
+	else:
+		raise ValueError(f"mode '{mode}' is not valid in function 'language_setting'")
 
 
 # CLASS ################################################################################################################
@@ -410,61 +429,156 @@ class VocabularyTrainer(MDApp):
 		self.words_in = None
 		self.words_out = None
 		self.z = None
-		self.category_distinct = "k"
-		self.level_distinct = "k"
+		self.category_distinct = create_str_from_list(char=db.get_distinct_categories())
+		self.level_distinct = create_str_from_list(char=db.get_distinct_levels())
 		self.levels_in = None
 		self.level_current = None
 		self.sensitivity = 2
 		# Dropdowns
-		self.menu_category = "k"
-		self.menu_level = "l"
-		self.menu_sensitivity = "l"
+		self.menu_category = self.update_category()
+		self.menu_level = self.update_level()
+		self.menu_sensitivity = self.update_sensitivity()
 
 	# SCREEN "START" ---------------------------------------------------------------------------------------------------
 
 	def check(self):
-		pass
+		try:
+			word_out_used = self.words_out[self.z]
+		except TypeError:
+			self.root.ids.label_word_out.text = "Please click the [i]NEXT[/i] button to start"
+		else:
+			if self.root.in_class.text == "":
+				self.root.ids.label_word_out.text = "Please enter a translation into the text field"
+			elif self.root.in_class.text == word_out_used:
+				self.root.ids.label_word_out.text = "[color=238823]Correct =)[/color]"
+				db.decrease_level(level=self.level_current, word=self.words_in[self.z])
+			else:
+				self.root.ids.label_word_out.text = "[color=D2222D]Incorrect =([/color]"
+				db.increase_level(level=self.level_current, word=self.words_in[self.z])
+			if (
+					self.level_distinct not in create_str_from_list(char=db.get_distinct_levels()) and
+					self.root.ids.label_level.text != 'All'
+			):
+				self.root.ids.label_word_in.text = (
+					f"There are no more words at level {self.level_distinct[1:-1]}. Back to level [i]All[/i]."
+				)
+				self.root.ids.label_level.text = 'All'
+			self.menu_level = self.update_level()
+			self.label_statistics = calc_statistics()
+			self.level_distinct = create_str_from_list(char=db.get_distinct_levels())
 
 	def next(self):
-		pass
+		self.language_in, self.language_out = language_setting(mode=self.language_setting)
+		self.words_in, self.words_out, self.levels_in = db.get_data(
+				language=self.language_in,
+				category=self.category_distinct,
+				level=self.level_distinct
+			)
+		weights = [self.sensitivity ** level for level in self.levels_in]
+		self.z = self.words_in.index(random.choices(population=self.words_in, weights=weights)[0])
+		self.root.ids.label_word_in.text = self.words_in[self.z]
+		self.root.in_class.text = ""
+		self.root.ids.label_word_out.text = ""
+		self.level_current = db.get_level(word=self.words_in[self.z])
 
 	def solve(self):
-		pass
+		try:
+			self.root.ids.label_word_out.text = self.words_out[self.z]
+		except TypeError:
+			self.root.ids.label_word_out.text = "Please click the [i]NEXT[/i] button to start"
 
 	def callback_category(self, instance):
-		pass
+		if instance == "All":
+			self.category_distinct = create_str_from_list(char=db.get_distinct_categories())
+		else:
+			self.category_distinct = f"('{instance.upper()}')"
+		self.root.ids.label_category.text = instance.capitalize()
+		self.menu_category.dismiss()
 
 	def callback_level(self, instance):
-		pass
+		if instance == "All":
+			self.level_distinct = create_str_from_list(char=db.get_distinct_levels())
+		else:
+			self.level_distinct = f"({instance})"
+		self.root.ids.label_level.text = instance
+		self.menu_level.dismiss()
 
 	def callback_sensitivity(self, instance):
-		pass
+		self.sensitivity = int(instance)
+		self.root.ids.label_sensitivity.text = instance
+		self.menu_sensitivity.dismiss()
 
 	def language_setting_callback(self, instance):
-		pass
+		self.language_setting = [key for key, value in DICT_LANGUAGE_SETTING.items() if value == instance.icon][0]
 
 	# SCREEN "STATISTICS" ----------------------------------------------------------------------------------------------
 
-	label_statistics = "s"
+	label_statistics = StringProperty(calc_statistics())
 
 	def reset(self):
-		pass
+		db.reset(category=self.category_distinct, level=self.level_distinct)
+		self.menu_level = self.update_level()
+		self.label_statistics = calc_statistics()
+		self.category_distinct = create_str_from_list(char=db.get_distinct_categories())
+		self.level_distinct = create_str_from_list(char=db.get_distinct_levels())
+		self.root.ids.label_category.text = 'All'
+		self.root.ids.label_level.text = 'All'
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
 	def open_link(self, link: str):
-		pass
+		webbrowser.open(url=link)
 
 	# OTHER ------------------------------------------------------------------------------------------------------------
 
 	def update_category(self):
-		pass
+		return MDDropdownMenu(
+			caller=self.screen.ids.button_category,
+			items=[
+				{
+					"text": f"{category.capitalize()}",
+					"viewclass": "OneLineListItem",
+					"height": dp(56),
+					"on_release": lambda x=f"{category}": self.callback_category(x),
+				} for category in ["All"] + db.get_distinct_categories()
+			],
+			width_mult=3,
+			max_height=dp(224),
+			background_color="#A7FFEB",
+		)
 
 	def update_level(self):
-		pass
+		return MDDropdownMenu(
+			caller=self.screen.ids.button_level,
+			items=[
+				{
+					"text": f"{level}",
+					"viewclass": "OneLineListItem",
+					"height": dp(56),
+					"on_release": lambda x=f"{level}": self.callback_level(x),
+				} for level in ["All"] + db.get_distinct_levels()
+			],
+			width_mult=3,
+			max_height=dp(224),
+			background_color="#A7FFEB",
+		)
 
 	def update_sensitivity(self):
-		pass
+		return MDDropdownMenu(
+			caller=self.screen.ids.button_sensitivity,
+			items=[
+				{
+					"text": f"{sensitivity}",
+					"viewclass": "OneLineListItem",
+					"height": dp(56),
+					"on_release": lambda x=f"{sensitivity}": self.callback_sensitivity(x),
+				} for sensitivity in [1, 2, 3, 4, 5, 10, 20]
+			],
+			width_mult=3,
+			max_height=dp(224),
+			background_color="#A7FFEB",
+		)
+
 	# BUILD ------------------------------------------------------------------------------------------------------------
 
 	def build(self):
