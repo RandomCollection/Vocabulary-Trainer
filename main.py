@@ -208,9 +208,9 @@ Screen:
 
                         Choose whether you want to translate from Spanish to German or vice versa via the [b]+[/b] \
                         button in the right bottom corner. There is also a random language option available. The \
-                        default setting is from Spanish to German.\n
+                        default setting is from Spanish to German.\n\
                         Choose whether you want to practise a specific category of words via the [b]CATEGORY[/b] \
-                        button. The default setting is [b]All[/b].\n
+                        button. The default setting is [b]All[/b].\n\
                         Choose whether you want to practise a specific level of words via the [b]LEVEL[/b] button. \
                         The default setting is [b]All[/b].\
                         "
