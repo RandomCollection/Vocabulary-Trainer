@@ -117,13 +117,13 @@ Screen:
                     text: "All"
                     id: label_category
                     font_style: "Body1"
-                    pos_hint: {"center_x": 0.7, "center_y": 0.2}
+                    pos_hint: {"center_x": 0.8, "center_y": 0.2}
 
                 MDRaisedButton:
                     text: "Category"
                     id: button_category
                     font_style: "Button"
-                    pos_hint: {"center_x": 0.1, "center_y": 0.2}
+                    pos_hint: {"center_x": 0.15, "center_y": 0.2}
                     theme_text_color: "Custom"
                     md_bg_color: (100/255,255/255,218/255,1)
                     text_color: (0.1/255,0.1/255,0.1/255,1)
@@ -135,13 +135,13 @@ Screen:
                     text: "All"
                     id: label_level
                     font_style: "Body1"
-                    pos_hint: {"center_x": 0.7, "center_y": 0.1}
+                    pos_hint: {"center_x": 0.8, "center_y": 0.1}
 
                 MDRaisedButton:
                     text: "Level"
                     id: button_level
                     font_style: "Button"
-                    pos_hint: {"center_x": 0.1, "center_y": 0.1}
+                    pos_hint: {"center_x": 0.15, "center_y": 0.1}
                     theme_text_color: "Custom"
                     md_bg_color: (100/255,255/255,218/255,1)
                     text_color: (0.1/255,0.1/255,0.1/255,1)
@@ -208,11 +208,9 @@ Screen:
 
                         Choose whether you want to translate from Spanish to German or vice versa via the [b]+[/b] \
                         button in the right bottom corner. There is also a random language option available. The \
-                        default setting is from Spanish to German.\n\n\
-
+                        default setting is from Spanish to German.\n
                         Choose whether you want to practise a specific category of words via the [b]CATEGORY[/b] \
-                        button. The default setting is [b]All[/b].\n\n\
-
+                        button. The default setting is [b]All[/b].\n
                         Choose whether you want to practise a specific level of words via the [b]LEVEL[/b] button. \
                         The default setting is [b]All[/b].\
                         "
@@ -226,13 +224,13 @@ Screen:
                     text: "2"
                     id: label_sensitivity
                     font_style: "Body1"
-                    pos_hint: {"center_x": 0.7, "center_y": 0.1}
+                    pos_hint: {"center_x": 0.8, "center_y": 0.1}
 
                 MDRaisedButton:
                     text: "Sensitivity"
                     id: button_sensitivity
                     font_style: "Button"
-                    pos_hint: {"center_x": 0.1, "center_y": 0.1}
+                    pos_hint: {"center_x": 0.15, "center_y": 0.1}
                     theme_text_color: "Custom"
                     md_bg_color: (100/255,255/255,218/255,1)
                     text_color: (0.1/255,0.1/255,0.1/255,1)
