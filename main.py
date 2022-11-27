@@ -441,41 +441,13 @@ class VocabularyTrainer(MDApp):
 	# SCREEN "START" ---------------------------------------------------------------------------------------------------
 
 	def check(self):
-		try:
-			word_out_used = self.words_out[self.z]
-		except TypeError:
-			self.root.ids.label_word_out.text = "Please click the [i]NEXT[/i] button to start"
-		else:
-			if self.root.in_class.text == "":
-				self.root.ids.label_word_out.text = "Please enter a translation into the text field"
-			elif self.root.in_class.text == word_out_used:
-				self.root.ids.label_word_out.text = "[color=238823]Correct =)[/color]"
-				db.increase_level(level=self.level_current, word=self.words_in[self.z])
-			else:
-				self.root.ids.label_word_out.text = "[color=D2222D]Incorrect =([/color]"
-				db.decrease_level(level=self.level_current, word=self.words_in[self.z])
-			self.label_statistics = calc_statistics()
+		pass
 
 	def next(self):
-		self.language_in, self.language_out = set_language(mode=self.language)
-		self.words_in, self.words_out, self.levels_in = db.get_data(
-				language=self.language_in,
-				category=self.category_distinct,
-				level=self.level_distinct
-			)
-		weights = [self.sensitivity ** ((-1) * level) for level in self.levels_in]
-		self.z = self.words_in.index(random.choices(population=self.words_in, weights=weights)[0])
-		self.root.ids.label_word_in.text = self.words_in[self.z]
-		self.root.in_class.text = ""
-		self.root.ids.label_word_out.text = ""
-		self.level_current = db.get_level(word=self.words_in[self.z])
-		self.update_menus()
+		pass
 
 	def solve(self):
-		try:
-			self.root.ids.label_word_out.text = self.words_out[self.z]
-		except TypeError:
-			self.root.ids.label_word_out.text = "Please click the [i]NEXT[/i] button to start"
+		pass
 
 	def callback_category(self, instance):
 		if instance == "All":
