@@ -489,7 +489,7 @@ class VocabularyTrainer(MDApp):
 
 	# SCREEN "STATISTICS" ----------------------------------------------------------------------------------------------
 
-	label_statistics = StringProperty(defaultvalue=calc_statistics())
+	label_statistics = StringProperty(calc_statistics())
 
 	def reset_statistics(self):
 		db.reset(category=self.category_distinct, level=self.level_distinct)
