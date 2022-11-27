@@ -463,19 +463,6 @@ class VocabularyTrainer(MDApp):
 				category=self.category_distinct,
 				level=self.level_distinct
 			)
-		if not self.words_in and self.language == "Random":
-			self.language_in, self.language_out = self.language_out, self.language_in
-			self.words_in, self.words_out, self.levels_in = db.get_data(
-				language=self.language_in,
-				category=self.category_distinct,
-				level=self.level_distinct
-			)
-			if not self.words_in:
-				self.reset_filters()
-				return None
-		elif not self.words_in:
-			self.reset_filters()
-			return None
 		weights = [self.sensitivity ** ((-1) * level) for level in self.levels_in]
 		self.z = self.words_in.index(random.choices(population=self.words_in, weights=weights)[0])
 		self.root.ids.label_word_in.text = self.words_in[self.z]
