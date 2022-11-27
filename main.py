@@ -370,18 +370,8 @@ db = Database()
 
 # FUNCTIONS ############################################################################################################
 
-def calc_statistics() -> str:
-	words = db.get_number_of_words(language='ES')
-	categories = len(db.get_distinct_categories_all())
-	levels = chr(10).join([f'{cnt[0]:2}: {cnt[1]:,}' for cnt in db.get_count_of_words_per_level()])
-	return (
-		f"The vocabulary trainer contains [b]{words:,} {'word' if words == 1 else 'words'}[/b] in [b]{categories:,} "
-		f"{'category' if categories == 1 else 'categories'}[/b].\n\n"
-		f"The table below gives an overview about the currently existing [b]levels[/b] and corresponding [b]number of "
-		f"words[/b] within. Please note that every word appears twice - once for the Spanish to German translation and "
-		f"once for the German to Spanish translation.\n\n"
-		f"{levels}"
-	)
+def calc_statistics():
+	pass
 
 
 def create_str_from_list(char: list) -> str:
@@ -450,55 +440,26 @@ class VocabularyTrainer(MDApp):
 		pass
 
 	def callback_category(self, instance):
-		if instance == "All":
-			self.category_distinct = create_str_from_list(char=db.get_distinct_categories_all())
-		else:
-			self.category_distinct = f"('{instance.upper()}')"
-		self.root.ids.label_category.text = instance.capitalize()
-		self.update_menus()
-		self.menu_category.dismiss()
+		pass
 
 	def callback_language(self, instance):
-		self.language = [key for key, value in DICT_LANGUAGE.items() if value == instance.icon][0]
+		pass
 
 	def callback_level(self, instance):
-		if instance == "All":
-			self.level_distinct = create_str_from_list(char=db.get_distinct_levels_all())
-		else:
-			self.level_distinct = f"({instance})"
-		self.root.ids.label_level.text = instance
-		self.update_menus()
-		self.menu_level.dismiss()
+		pass
 
 	def callback_sensitivity(self, instance):
-		self.sensitivity = int(instance)
-		self.root.ids.label_sensitivity.text = instance
-		self.menu_sensitivity.dismiss()
+		pass
 
 	def reset_filters(self):
-		self.root.ids.label_word_in.text = (
-			"There are no more words with the current configuration. Back to [i]All[/i] and [i]ES -> DE[/i]."
-		)
-		self.category_distinct = create_str_from_list(char=db.get_distinct_categories_all())
-		self.root.ids.label_category.text = 'All'
-		self.level_distinct = create_str_from_list(char=db.get_distinct_levels_all())
-		self.root.ids.label_level.text = 'All'
-		self.language_in = "ES"
-		self.language_out = "DE"
-		self.update_menus()
+		pass
 
 	# SCREEN "STATISTICS" ----------------------------------------------------------------------------------------------
 
 	label_statistics = StringProperty(calc_statistics())
 
 	def reset_statistics(self):
-		db.reset(category=self.category_distinct, level=self.level_distinct)
-		self.update_menus()
-		self.label_statistics = calc_statistics()
-		self.category_distinct = create_str_from_list(char=db.get_distinct_categories_all())
-		self.level_distinct = create_str_from_list(char=db.get_distinct_levels_all())
-		self.root.ids.label_category.text = 'All'
-		self.root.ids.label_level.text = 'All'
+		pass
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
