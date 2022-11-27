@@ -1,7 +1,0 @@
-kivy==2.1.0
-kivy-deps.angle==0.3.2
-kivy-deps.glew==0.3.1
-kivy-deps.gstreamer==0.3.3
-kivy-deps.sdl2==0.4.5
-kivymd==0.104.2
-pandas==1.4.4
