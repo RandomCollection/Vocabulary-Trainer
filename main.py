@@ -543,7 +543,6 @@ class VocabularyTrainer(MDApp):
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
-	@staticmethod
 	def open_link(link: str):
 		webbrowser.open(url=link)
 
