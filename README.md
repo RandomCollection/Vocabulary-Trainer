@@ -1,4 +1,4 @@
-# Travelling Salesperson Problem Art
+# Vocabulary Trainer
 
 Travelling Salesperson Problem (TSP) art inspired by 
 
