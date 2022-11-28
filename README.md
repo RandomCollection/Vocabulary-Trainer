@@ -1,8 +1,7 @@
 # Vocabulary Trainer
 
-<p align="center">
-<video src="vocabulary_trainer.mp4" width="200">
-</p>
+<video src="vocabulary_trainer.mp4"></video>
+
 
 <p align="center">
 <img src="vocabulary_trainer.gif" width="200">
