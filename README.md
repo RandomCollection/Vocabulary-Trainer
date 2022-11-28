@@ -2,7 +2,7 @@
 
 <img src="vocabulary_trainer.gif" width="200">
 
-- Start the vocabulary trainer byselecting **Start** in the menu.
+- Start the vocabulary trainer by selecting **Start** in the menu.
 
 - Press the **NEXT** button to start with a new word.
 
@@ -16,7 +16,7 @@
 
 - Choose whether you want to practise a specific level of words via the **LEVEL** button. The default setting is **All**.
 
-- Initially, every word is assigned a level of zero. The level of a word decreases by one if it is solved incorrectly and increases by one if it is solved correctly. The probability of the words to show up are based on their weights, which are calculated as **sensitivity \** ((-1) * level of word)**. Hence, the probability of seeing the corresponding word again decreases or increases exponentially with the number of correct or incorrect translations, respectively. The sensitivity has a default value of 2, but it can be adjusted using the below **SENSITIVITY** button.
+- Initially, every word is assigned a level of zero. The level of a word decreases by one if it is solved incorrectly and increases by one if it is solved correctly. The probability of the words to show up are based on their weights, which are calculated as **sensitivity \*\* ((-1) * level of word)**. Hence, the probability of seeing the corresponding word again decreases or increases exponentially with the number of correct or incorrect translations, respectively. The sensitivity has a default value of 2, but it can be adjusted using the below **SENSITIVITY** button.
 
 - The levels can be reset by pressing the **RESET** button in the **Statistics** section. Depending on the category and level selection of the **Start** screen, it is
 possible to only reset the levels of a subsection.
