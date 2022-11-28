@@ -1,6 +1,8 @@
 # Vocabulary Trainer
 
+<p align="center">
 <img src="vocabulary_trainer.gif" width="200">
+</p>
 
 - Start the vocabulary trainer by selecting **Start** in the menu.
 
