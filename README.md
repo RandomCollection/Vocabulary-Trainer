@@ -1,6 +1,10 @@
 # Vocabulary Trainer
 
 <p align="center">
+<img src="vocabulary_trainer.mp4 width="200">
+</p>
+
+<p align="center">
 <img src="vocabulary_trainer.gif" width="200">
 </p>
 
