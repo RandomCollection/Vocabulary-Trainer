@@ -2,7 +2,7 @@
 
 <img src="vocabulary_trainer.gif" width="200">
 
-Start the vocabulary trainer by selecting [b]Start[/b] in the menu.\n\n\
+- Start the vocabulary trainer byselecting **Start** in the menu.
 
 - Press the **NEXT** button to start with a new word.
 
