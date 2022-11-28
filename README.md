@@ -1,7 +1,7 @@
 # Vocabulary Trainer
 
 
-https://user-images.githubusercontent.com/99690701/204389052-26c80df5-2873-4206-80d3-3dff15bb7555.mp4
+<video https://user-images.githubusercontent.com/99690701/204389052-26c80df5-2873-4206-80d3-3dff15bb7555.mp4></video>
 
 
 - Start the vocabulary trainer by selecting **Start** in the menu.
