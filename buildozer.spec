@@ -53,11 +53,14 @@ fullscreen = 0
 # (list) Permissions
 android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
+# (int) Target Android API, should be as high as possible.
+android.api = 33
+
 # (bool) Use --private data storage (True) or --dir public storage (False)
 android.private_storage = False
 
 # (str) The android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-android.archs = armeabi-v7a
+android.arch = armeabi-v7a
 
 # (bool) enables Android auto backup feature (Android API >=23)
 android.allow_backup = True
