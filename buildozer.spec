@@ -53,6 +53,9 @@ fullscreen = 0
 # (list) Permissions
 android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
 
+# (bool) Use --private data storage (True) or --dir public storage (False)
+android.private_storage = False
+
 # (str) The android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 android.arch = armeabi-v7a
 
