@@ -7,6 +7,9 @@
 
 # LIBRARIES ############################################################################################################
 
+# new
+import os
+# new
 import random
 import webbrowser
 
@@ -20,6 +23,11 @@ from kivymd.uix.menu import MDDropdownMenu
 if platform == "android":
 	from android.permissions import Permission, request_permissions
 	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
+	# new
+	from android.storage import primary_external_storage_path
+	rep = primary_external_storage_path()
+	download_dir_path = os.path.join(rep, "Download")
+	# new
 
 from database import Database
 
@@ -151,6 +159,10 @@ class VocabularyTrainer(MDApp):
 		self.root.ids.label_word_out.text = ""
 		self.level_current = db.get_level(word=self.words_in[self.z])
 		self.update_menus()
+		# new
+		f = open("guru99.txt", "w+")
+		f.close()
+		# new
 
 	def solve(self):
 		try:
