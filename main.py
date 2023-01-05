@@ -214,13 +214,19 @@ class VocabularyTrainer(MDApp):
 
 	# SCREEN "UPDATE" --------------------------------------------------------------------------------------------------
 
-	@staticmethod
-	def import_db():
-		shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
+	def import_db(self):
+		try:
+			shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
+			self.root.ids.label_update_status.text = "import successful"
+		except Exception as e:
+			self.root.ids.label_update_status.text = str(e)
 
-	@staticmethod
-	def export_db():
-		shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
+	def export_db(self):
+		try:
+			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
+			self.root.ids.label_update_status.text = "export successful"
+		except Exception as e:
+			self.root.ids.label_update_status.text = str(e)
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
