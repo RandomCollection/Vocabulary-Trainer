@@ -158,8 +158,11 @@ class VocabularyTrainer(MDApp):
 		self.level_current = db.get_level(word=self.words_in[self.z])
 		self.update_menus()
 		# new
-		primary_external_storage_path()
 		self.root.ids.label_word_in.text = str(primary_external_storage_path())
+		testfile = bytes([1,2,3,4])
+		fname = os.path.join(primary_external_storage_path(), 'testfile')
+        	with open(fname, 'wb') as f:
+            		f.write(testfile)
 		# f = open(os.path.join(primary_external_storage_path(), 'testfile.txt'), "w+")
 		# f.close()
 		# new
