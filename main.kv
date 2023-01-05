@@ -223,6 +223,38 @@ Screen:
 
             Screen:
 
+                name: "update"
+
+                MDLabel:
+                    text:
+                        "\
+                        Import and export the underlying database by pressing [b]IMPORT[/b] and [b]EXPORT[/b], \
+                        respectively.\
+                        "
+                    markup: True
+                    font_style: "Body1"
+                    halign: "left"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    size_hint: 0.8, 0.8
+
+                MDFillRoundFlatButton:
+                    text: "Import"
+                    font_style: "Button"
+                    pos_hint: {"center_x": 0.3, "center_y": 0.15}
+                    size_hint: None, None
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.import_db()
+
+                MDFillRoundFlatButton:
+                    text: "Export"
+                    font_style: "Button"
+                    pos_hint: {"center_x": 0.7, "center_y": 0.15}
+                    size_hint: None, None
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.export_db()
+
+            Screen:
+
                 name: "about"
 
                 MDLabel:
@@ -326,6 +358,14 @@ Screen:
                         screen_manager.current = "how_to"
                     IconLeftWidget:
                         icon: "chat-question"
+
+                OneLineAvatarListItem:
+                    text: "Update"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "update"
+                    IconLeftWidget:
+                        icon: "update"
 
                 OneLineAvatarListItem:
                     text: "About"
