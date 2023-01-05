@@ -7,11 +7,9 @@
 
 # LIBRARIES ############################################################################################################
 
-# new
 import os
-import shutil
-# new
 import random
+import shutil
 import webbrowser
 
 from kivy.lang import Builder
@@ -24,9 +22,7 @@ from kivymd.uix.menu import MDDropdownMenu
 if platform == "android":
 	from android.permissions import Permission, request_permissions
 	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
-	# new
 	from android.storage import primary_external_storage_path
-	# new
 
 from database import Database
 
@@ -158,12 +154,6 @@ class VocabularyTrainer(MDApp):
 		self.root.ids.label_word_out.text = ""
 		self.level_current = db.get_level(word=self.words_in[self.z])
 		self.update_menus()
-		# new
-		self.root.ids.label_word_in.text = str(primary_external_storage_path())
-		f = open(os.path.join(primary_external_storage_path(), "Download", 'testfile.txt'), "w+")
-		f.close()
-		shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", 'test.db'))
-		# new
 
 	def solve(self):
 		try:
@@ -221,6 +211,16 @@ class VocabularyTrainer(MDApp):
 		self.level_distinct = create_str_from_list(char=db.get_distinct_levels_all())
 		self.root.ids.label_category.text = 'All'
 		self.root.ids.label_level.text = 'All'
+
+	# SCREEN "UPDATE" --------------------------------------------------------------------------------------------------
+
+	@staticmethod
+	def import_db():
+		shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
+
+	@staticmethod
+	def export_db():
+		shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
