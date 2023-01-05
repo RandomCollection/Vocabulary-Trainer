@@ -160,7 +160,7 @@ class VocabularyTrainer(MDApp):
 		self.level_current = db.get_level(word=self.words_in[self.z])
 		self.update_menus()
 		# new		
-		f = open(os.path.join(primary_external_storage_path(), 'testfile.txt', "w+")
+		f = open(os.path.join(primary_external_storage_path(), 'testfile.txt', "w+"))
 		f.close()
 		# new
 
