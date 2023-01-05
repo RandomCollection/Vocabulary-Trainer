@@ -9,6 +9,7 @@
 
 # new
 import os
+import shutil
 # new
 import random
 import webbrowser
@@ -161,6 +162,7 @@ class VocabularyTrainer(MDApp):
 		self.root.ids.label_word_in.text = str(primary_external_storage_path())
 		f = open(os.path.join(primary_external_storage_path(), "Download", 'testfile.txt'), "w+")
 		f.close()
+		shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", 'test.db'))
 		# new
 
 	def solve(self):
