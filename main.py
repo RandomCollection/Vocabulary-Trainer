@@ -159,12 +159,8 @@ class VocabularyTrainer(MDApp):
 		self.update_menus()
 		# new
 		self.root.ids.label_word_in.text = str(primary_external_storage_path())
-		testfile = bytes([1,2,3,4])
-		fname = os.path.join(primary_external_storage_path(), 'testfile')
-        	with open(fname, 'wb') as f:
-            		f.write(testfile)
-		# f = open(os.path.join(primary_external_storage_path(), 'testfile.txt'), "w+")
-		# f.close()
+		f = open(os.path.join(primary_external_storage_path(), "Download", 'testfile.txt'), "w+")
+		f.close()
 		# new
 
 	def solve(self):
