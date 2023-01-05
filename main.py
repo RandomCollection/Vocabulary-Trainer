@@ -25,8 +25,6 @@ if platform == "android":
 	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 	# new
 	from android.storage import primary_external_storage_path
-	rep = primary_external_storage_path()
-	download_dir_path = os.path.join(rep, "Download")
 	# new
 
 from database import Database
@@ -159,9 +157,11 @@ class VocabularyTrainer(MDApp):
 		self.root.ids.label_word_out.text = ""
 		self.level_current = db.get_level(word=self.words_in[self.z])
 		self.update_menus()
-		# new		
-		f = open(os.path.join(primary_external_storage_path(), 'testfile.txt'), "w+")
-		f.close()
+		# new
+		primary_external_storage_path()
+		self.root.ids.label_word_in.text = str(primary_external_storage_path())
+		# f = open(os.path.join(primary_external_storage_path(), 'testfile.txt'), "w+")
+		# f.close()
 		# new
 
 	def solve(self):
