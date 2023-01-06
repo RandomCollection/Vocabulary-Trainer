@@ -216,6 +216,7 @@ class VocabularyTrainer(MDApp):
 
 	def import_db(self):
 		try:
+			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 			shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
 			self.root.ids.label_update_status.text = "import successful"
 		except Exception as e:
@@ -223,6 +224,7 @@ class VocabularyTrainer(MDApp):
 
 	def export_db(self):
 		try:
+			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
 			self.root.ids.label_update_status.text = "export successful"
 		except Exception as e:
