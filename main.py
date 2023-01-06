@@ -217,7 +217,7 @@ class VocabularyTrainer(MDApp):
 	def import_db(self):
 		try:
 			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
-			shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
+			shutil.copy(os.path.join(primary_external_storage_path(), "Android", "data.db"), "data.db")
 			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + "import successful"
 		except Exception as e:
 			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + str(e)
@@ -225,7 +225,7 @@ class VocabularyTrainer(MDApp):
 	def export_db(self):
 		try:
 			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
-			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
+			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Android", "data.db"))
 			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + "export successful"
 		except Exception as e:
 			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + str(e)
