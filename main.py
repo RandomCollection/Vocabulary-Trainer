@@ -20,7 +20,7 @@ from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
 
 if platform == "android":
-	from android.permissions import Permission, request_permissions
+	from android.permissions import Permission, request_permissions, check_permission
 	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 	from android.storage import primary_external_storage_path
 
@@ -218,17 +218,17 @@ class VocabularyTrainer(MDApp):
 		try:
 			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 			shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
-			self.root.ids.label_update_status.text = "import successful"
+			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + "import successful"
 		except Exception as e:
-			self.root.ids.label_update_status.text = str(e)
+			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + str(e)
 
 	def export_db(self):
 		try:
 			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
-			self.root.ids.label_update_status.text = "export successful"
+			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + "export successful"
 		except Exception as e:
-			self.root.ids.label_update_status.text = str(e)
+			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + str(e)
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
