@@ -9,6 +9,7 @@
 
 import os
 import random
+import requests
 import shutil
 import webbrowser
 
@@ -20,7 +21,7 @@ from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
 
 if platform == "android":
-	from android.permissions import Permission, request_permissions, check_permission
+	from android.permissions import Permission, request_permissions
 	request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 	from android.storage import primary_external_storage_path
 
@@ -216,19 +217,20 @@ class VocabularyTrainer(MDApp):
 
 	def import_db(self):
 		try:
-			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
-			shutil.copy(os.path.join(primary_external_storage_path(), "data.db"), "data.db")
-			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + "import successful"
+			url = r"https://raw.github.com/RandomCollection/Vocabulary-Trainer/main/test.db"
+			r = requests.get(url, allow_redirects=True)
+			open('data.db', 'wb').write(r.content)
+			# shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
+			self.root.ids.label_update_status.text = "import successful"
 		except Exception as e:
-			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + str(e)
+			self.root.ids.label_update_status.text = str(e)
 
 	def export_db(self):
 		try:
-			request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
-			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "data.db"))
-			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + "export successful"
+			shutil.copy("data.db", os.path.join(primary_external_storage_path(), "Download", "data.db"))
+			self.root.ids.label_update_status.text = "export successful"
 		except Exception as e:
-			self.root.ids.label_update_status.text = str(check_permission(Permission.READ_EXTERNAL_STORAGE)) + str(check_permission(Permission.WRITE_EXTERNAL_STORAGE)) + str(e)
+			self.root.ids.label_update_status.text = str(e)
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
