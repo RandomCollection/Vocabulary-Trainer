@@ -217,11 +217,11 @@ class VocabularyTrainer(MDApp):
 
 	def import_db(self):
 		try:
-			# url = r"http://raw.github.com/RandomCollection/Vocabulary-Trainer/main/test.db"
-			# r = requests.get(url, verify=False, timeout=5)
-			# open('data.db', 'wb').write(r.content)
-			shutil.copy(os.path.join(primary_external_storage_path(), "Documents", "data.db"), "data.db")
-			self.root.ids.label_update_status.text = "import successful"
+			url = r"https://dl.dropbox.com/s/shwv4bhspcu3cbe/data.db?dl=1"
+			r = requests.get(url, verify=False, timeout=5)
+			open('data.db', 'wb').write(r.content)
+			# shutil.copy(os.path.join(primary_external_storage_path(), "Documents", "data.db"), "data.db")
+			# self.root.ids.label_update_status.text = "import successful"
 		except Exception as e:
 			self.root.ids.label_update_status.text = str(e)
 
