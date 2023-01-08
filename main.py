@@ -218,7 +218,7 @@ class VocabularyTrainer(MDApp):
 	def import_db(self):
 		try:
 			url = r"https://raw.github.com/RandomCollection/Vocabulary-Trainer/main/test.db"
-			r = requests.get(url, allow_redirects=True)
+			r = requests.get(url, verify=False)
 			open('data.db', 'wb').write(r.content)
 			# shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
 			self.root.ids.label_update_status.text = "import successful"
