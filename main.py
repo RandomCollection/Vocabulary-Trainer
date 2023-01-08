@@ -22,7 +22,7 @@ from kivymd.uix.menu import MDDropdownMenu
 
 if platform == "android":
 	from android.permissions import Permission, request_permissions
-	request_permissions([Permission.INTERNET, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
+	request_permissions([Permission.INTERNET, Permission.ACCESS_NETWORK_STATE, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
 	from android.storage import primary_external_storage_path
 
 from database import Database
