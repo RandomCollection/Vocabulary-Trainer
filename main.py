@@ -22,7 +22,7 @@ from kivymd.uix.menu import MDDropdownMenu
 
 if platform == "android":
 	from android.permissions import Permission, request_permissions
-	request_permissions([Permission.INTERNET, Permission.ACCESS_NETWORK_STATE, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
+	request_permissions([Permission.INTERNET, Permission.ACCESS_NETWORK_STATE, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE, Permission.MANAGE_EXTERNAL_STORAGE])
 	from android.storage import primary_external_storage_path
 
 from database import Database
@@ -217,10 +217,10 @@ class VocabularyTrainer(MDApp):
 
 	def import_db(self):
 		try:
-			url = r"http://raw.github.com/RandomCollection/Vocabulary-Trainer/main/test.db"
-			r = requests.get(url, verify=False, timeout=5)
-			open('data.db', 'wb').write(r.content)
-			# shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
+			# url = r"http://raw.github.com/RandomCollection/Vocabulary-Trainer/main/test.db"
+			# r = requests.get(url, verify=False, timeout=5)
+			# open('data.db', 'wb').write(r.content)
+			shutil.copy(os.path.join(primary_external_storage_path(), "Download", "data.db"), "data.db")
 			self.root.ids.label_update_status.text = "import successful"
 		except Exception as e:
 			self.root.ids.label_update_status.text = str(e)
