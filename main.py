@@ -219,253 +219,86 @@ class VocabularyTrainer(MDApp):
 	# SCREEN "START" ---------------------------------------------------------------------------------------------------
 
 	def solve(self):
-		if self.status == 0:
-			self.root.ids.label_word_out.text = cfg.LABEL_START
-		else:
-			self.root.ids.label_word_out.text = self.words_out[self.z]
+		pass
 
 	def check(self):
-		if self.status == 0:
-			self.status = 1
-			self.root.ids.please_translate.text = cfg.LABEL_TRANSLATE
-			self.next()
-			self.root.ids.label_button_check.text = cfg.LABEL_BUTTON_CHECK
-		else:
-			if self.root.input.text == "":
-				self.root.ids.label_word_out.text = cfg.LABEL_ENTER_TRANSLATION
-			elif self.root.input.text in self.words_out[self.z].split("/"):
-				self.root.ids.label_word_out.text = cfg.LABEL_SOLUTION_CORRECT
-				Clock.schedule_once(lambda _: self.sleeper_correct(), self.setting_sleeper)
-				db.increase_level(level=self.level_current, word=self.words_in[self.z])
-				self.statistic_streak_current += 1
-				self.statistic_streak_best = max(self.statistic_streak_current, self.statistic_streak_best)
-				self.update_statistics()
-			else:
-				self.root.ids.label_word_out.text = cfg.LABEL_SOLUTION_INCORRECT
-				db.decrease_level(level=self.level_current, word=self.words_in[self.z])
-				self.statistic_streak_current = 0
-				self.update_statistics()
+		pass
 
 	def next(self):
-		if self.status == 0:
-			self.root.ids.label_word_out.text = cfg.LABEL_START
-			return None
-		self.language_in, self.language_out = set_language(mode=self.language)
-		self.words_in, self.words_out, self.levels_in = db.get_data(
-				language=self.language_in,
-				category=self.distinct_category,
-				level=self.distinct_level
-			)
-		if not self.words_in and self.language == "Random":
-			self.language_in, self.language_out = self.language_out, self.language_in
-			self.words_in, self.words_out, self.levels_in = db.get_data(
-				language=self.language_in,
-				category=self.distinct_category,
-				level=self.distinct_level
-			)
-			if not self.words_in:
-				self.reset_filters()
-				return None
-		elif not self.words_in:
-			self.reset_filters()
-			return None
-		weights = [self.setting_sensitivity ** ((-1) * level) for level in self.levels_in]
-		self.z = self.words_in.index(random.choices(population=self.words_in, weights=weights)[0])
-		self.root.ids.label_word_in.text = self.words_in[self.z]
-		self.root.input.text = ""
-		self.root.ids.label_word_out.text = ""
-		self.level_current = db.get_level(word=self.words_in[self.z])
-		self.update_dropdowns()
+		pass
 
 	# SCREEN "STATISTICS" ----------------------------------------------------------------------------------------------
 
 	def reset_statistics(self):
-		db.reset(category=self.distinct_category, level=self.distinct_level)
-		self.reset()
+		pass
 
 	# SCREEN "VOCABULARY" ----------------------------------------------------------------------------------------------
 
 	def show_vocabulary(self):
-		data = db.get_data(
-			language=self.language_in,
-			category=self.distinct_category,
-			level=self.distinct_level
-		)
-		self.row_data = [(f"{data[0][i]}", f"{data[1][i]}", f"{data[2][i]}") for i in range(len(data[0]))]
-		self.data_tables.update_row_data(self.data_tables, self.row_data)
+		pass
 
 	# SCREEN "SETTINGS" ------------------------------------------------------------------------------------------------
 
 	def reset_counters(self):
-		self.statistic_streak_current = 0
-		self.statistic_streak_best = 0
-		self.statistic_words_current = 0
-		self.statistic_words_total = 0
-		self.choose_color_wrapper_number()
-		self.root.ids.label_reset_status.text = cfg.LABEL_RESET
-		db.update_counters(streak_best=self.statistic_streak_best, words_total=self.statistic_words_total)
+		pass
 
 	# SCREEN "UPDATE" --------------------------------------------------------------------------------------------------
 
 	def import_db(self):
-		self.root.ids.label_update_status.text = cfg.LABEL_IMPORT_START
-		try:
-			# (
-			# 	pd.read_excel(io=cfg.URL_DATABASE)
-			# 	.merge(
-			# 		right=pd.read_sql(sql="SELECT * FROM VOCABULARY", con=db.con),
-			# 		how="left",
-			# 		on="WORD",
-			# 		suffixes=("_NEW", "_OLD")
-			# 	)
-			# 	.filter(items=["WORD", "TRANSLATION_NEW", "CATEGORY_NEW", "LANGUAGE_NEW", "LEVEL_OLD"])
-			# 	.rename(columns=lambda x: x.split("_")[0])
-			# 	.assign(LEVEL=lambda df: df["LEVEL"].fillna(0).astype(int))
-			# 	.to_sql(name="VOCABULARY", con=db.con, if_exists="replace", index=False)
-			# )
-			# db.con.commit()
-			self.reset()
-			self.root.ids.label_update_status.text = cfg.LABEL_IMPORT_1
-		except Exception as e:
-			self.root.ids.label_update_status.text = cfg.LABEL_IMPORT_0.format(e=str(e))
+		pass
 
 	def export_db(self):
-		self.root.ids.label_update_status.text = cfg.LABEL_EXPORT_START
-		try:
-			shutil.copy(cfg.NAME_DATABASE, os.path.join(primary_external_storage_path(), "Download", cfg.NAME_DATABASE))
-			self.root.ids.label_update_status.text = cfg.LABEL_EXPORT_1
-		except Exception as e:
-			self.root.ids.label_update_status.text = cfg.LABEL_EXPORT_0(e=str(e))
+		pass
 
 	# SCREEN "ABOUT" ---------------------------------------------------------------------------------------------------
 
 	@staticmethod
 	def open_url(url: str):
-		webbrowser.open(url=url)
+		pass
 
 	# OTHER ------------------------------------------------------------------------------------------------------------
 
 	def callback_category(self, instance):
-		if instance == "All":
-			self.distinct_category = create_str_from_list(char=db.get_distinct_categories_all())
-		else:
-			self.distinct_category = f"('{instance}')"
-		self.root.ids.label_category.text = instance.capitalize()
-		self.update_dropdowns()
-		self.dropdown_category.dismiss()
+		pass
 
 	def callback_counter_on(self, instance):
-		self.setting_counter_on = 1 if instance == "On" else 0
-		self.root.ids.label_counter_on.text = instance
-		db.update_constants(value=self.setting_counter_on, column="SETTING_COUNTER_ON", table="SETTINGS")
-		self.choose_color_wrapper_text()
-		self.choose_color_wrapper_number()
-		self.dropdown_counter_on.dismiss()
+		pass
 
 	def callback_language(self, instance):
-		self.language = [key for key, value in cfg.DICT_LANGUAGE.items() if value == instance.icon][0]
+		pass
 
 	def callback_level(self, instance):
-		if instance == "All":
-			self.distinct_level = create_str_from_list(char=db.get_distinct_levels_all())
-		else:
-			self.distinct_level = f"({instance})"
-		self.root.ids.label_level.text = instance
-		self.update_dropdowns()
-		self.dropdown_level.dismiss()
+		pass
 
 	def callback_sensitivity(self, instance):
-		self.setting_sensitivity = int(instance)
-		self.root.ids.label_sensitivity.text = instance
-		db.update_constants(value=self.setting_sensitivity, column="SETTING_SENSITIVITY", table="SETTINGS")
-		self.dropdown_sensitivity.dismiss()
+		pass
 
 	def callback_sleeper(self, instance):
-		self.setting_sleeper = int(instance)
-		self.root.ids.label_sleeper.text = f"{instance}s"
-		db.update_constants(value=self.setting_sleeper, column="SETTING_SLEEPER", table="SETTINGS")
-		self.dropdown_sleeper.dismiss()
+		pass
 
 	def choose_color_wrapper_number(self):
-		self.label_streak_current_number = choose_color(
-			indicator=self.setting_counter_on, text=f"{self.statistic_streak_current:,}"
-		)
-		self.label_streak_best_number = choose_color(
-			indicator=self.setting_counter_on, text=f"{self.statistic_streak_best:,}"
-		)
-		self.label_words_current_number = choose_color(
-			indicator=self.setting_counter_on, text=f"{self.statistic_words_current:,}"
-		)
-		self.label_words_total_number = choose_color(
-			indicator=self.setting_counter_on, text=f"{self.statistic_words_total:,}"
-		)
+		pass
 
 	def choose_color_wrapper_text(self):
-		self.label_streak_current_text = choose_color(
-			indicator=self.setting_counter_on, text=cfg.LABEL_COUNTER_STREAK_CURRENT
-		)
-		self.label_streak_best_text = choose_color(
-			indicator=self.setting_counter_on, text=cfg.LABEL_COUNTER_STREAK_BEST
-		)
-		self.label_words_current_text = choose_color(
-			indicator=self.setting_counter_on, text=cfg.LABEL_COUNTER_WORDS_CURRENT
-		)
-		self.label_words_total_text = choose_color(
-			indicator=self.setting_counter_on, text=cfg.LABEL_COUNTER_WORDS_TOTAL
-		)
+		pass
 
 	def on_start(self):
-		# Labels in 'main.kv' with 'text: ""' that should show text not equal to "" on start
-		self.root.ids.label_word_in.text = cfg.LABEL_START
-		self.root.ids.text.text = cfg.LABEL_TEXT
-		self.root.ids.label_settings.text = cfg.LABEL_SETTINGS
-		self.root.ids.label_how_to.text = cfg.LABEL_HOW_TO
-		self.root.ids.label_update.text = cfg.LABEL_UPDATE
-		self.root.ids.label_about.text = cfg.LABEL_ABOUT
-		# MDDataTable
-		self.root.ids.data_layout.add_widget(self.data_tables)
+		pass
 
 	def reset(self):
-		self.distinct_category = create_str_from_list(char=db.get_distinct_categories_all())
-		self.distinct_level = create_str_from_list(char=db.get_distinct_levels_all())
-		self.root.ids.please_translate.text = ""
-		self.root.ids.label_word_in.text = cfg.LABEL_START
-		self.root.ids.label_word_out.text = ""
-		self.root.ids.label_button_check.text = "START"
-		self.root.ids.label_category.text = 'All'
-		self.root.ids.label_level.text = 'All'
-		self.update_dropdowns()
-		self.language = "ES -> DE"
-		self.status = 0
-		self.table_statistics = create_table_statistics()
+		pass
 
 	def reset_filters(self):
-		self.root.ids.label_word_in.text = cfg.LABEL_NO_WORDS
-		self.reset()
-
+		pass
+	
 	def sleeper_correct(self):
-		self.root.ids.label_word_out.text = ""
-		self.next()
+		pass
 
 	def update_dropdowns(self):
-		self.dropdown_level = update_dropdown(
-			caller=self.screen.ids.button_level,
-			values=["All"] + db.get_distinct_levels(category=self.distinct_category),
-			callback=self.callback_level
-		)
-		self.dropdown_category = update_dropdown(
-			caller=self.screen.ids.button_category,
-			values=["All"] + db.get_distinct_categories(level=self.distinct_level),
-			callback=self.callback_category
-		)
+		pass
 
 	def update_statistics(self):
-		self.table_statistics = create_table_statistics()
-		self.statistic_words_current += 1
-		self.statistic_words_total += 1
-		self.choose_color_wrapper_number()
-		db.update_counters(streak_best=self.statistic_streak_best, words_total=self.statistic_words_total)  # TODO: could this go to 'on_end'?
-		db.update_constants_date(value=date.today())  # TODO: could this go to 'on_end'?
+		pass
 
 	# BUILD ------------------------------------------------------------------------------------------------------------
 
