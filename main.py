@@ -1,29 +1,18 @@
-
-import os
-# import pandas as pd
-import random
-import shutil
-import webbrowser
-
-from datetime import date, datetime
-from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import dp
-from kivy.properties import DictProperty, ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.utils import platform
 from kivymd.app import MDApp
-from kivymd.uix.datatables import MDDataTable
-from kivymd.uix.menu import MDDropdownMenu
 
 if platform == "android":
 	from android.permissions import Permission, request_permissions
-	from android.storage import primary_external_storage_path
 	request_permissions([Permission.INTERNET, Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
+
 
 # CLASS ################################################################################################################
 
 class VocabularyTrainer(MDApp):
-	input = ObjectProperty(defaultvalue=None)
+	input = ObjectProperty(defaultvalue="")
+	label_home = StringProperty(defaultvalue="")
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
