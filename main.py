@@ -8,7 +8,7 @@
 # LIBRARIES ############################################################################################################
 
 import os
-import pandas as pd
+# import pandas as pd
 import random
 import shutil
 import webbrowser
@@ -310,20 +310,20 @@ class VocabularyTrainer(MDApp):
 	def import_db(self):
 		self.root.ids.label_update_status.text = cfg.LABEL_IMPORT_START
 		try:
-			(
-				pd.read_excel(io=cfg.URL_DATABASE)
-				.merge(
-					right=pd.read_sql(sql="SELECT * FROM VOCABULARY", con=db.con),
-					how="left",
-					on="WORD",
-					suffixes=("_NEW", "_OLD")
-				)
-				.filter(items=["WORD", "TRANSLATION_NEW", "CATEGORY_NEW", "LANGUAGE_NEW", "LEVEL_OLD"])
-				.rename(columns=lambda x: x.split("_")[0])
-				.assign(LEVEL=lambda df: df["LEVEL"].fillna(0).astype(int))
-				.to_sql(name="VOCABULARY", con=db.con, if_exists="replace", index=False)
-			)
-			db.con.commit()
+			# (
+			# 	pd.read_excel(io=cfg.URL_DATABASE)
+			# 	.merge(
+			# 		right=pd.read_sql(sql="SELECT * FROM VOCABULARY", con=db.con),
+			# 		how="left",
+			# 		on="WORD",
+			# 		suffixes=("_NEW", "_OLD")
+			# 	)
+			# 	.filter(items=["WORD", "TRANSLATION_NEW", "CATEGORY_NEW", "LANGUAGE_NEW", "LEVEL_OLD"])
+			# 	.rename(columns=lambda x: x.split("_")[0])
+			# 	.assign(LEVEL=lambda df: df["LEVEL"].fillna(0).astype(int))
+			# 	.to_sql(name="VOCABULARY", con=db.con, if_exists="replace", index=False)
+			# )
+			# db.con.commit()
 			self.reset()
 			self.root.ids.label_update_status.text = cfg.LABEL_IMPORT_1
 		except Exception as e:
