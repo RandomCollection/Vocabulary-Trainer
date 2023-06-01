@@ -32,7 +32,7 @@ version = 0.4
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, sqlite3, android, requests, certifi, chardet, idna, urllib3, openssl
+requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, sqlite3, android, requests, certifi, chardet, idna, urllib3, openssl, pandas
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -272,7 +272,7 @@ android.permissions = INTERNET
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = armeabi-v7a
+android.archs = arm64-v8a, armeabi-v7a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
@@ -357,7 +357,7 @@ ios.kivy_ios_branch = master
 #ios.ios_deploy_dir = ../ios_deploy
 # Or specify URL and branch
 ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
-ios.ios_deploy_branch = 1.10.0
+ios.ios_deploy_branch = 1.12.2
 
 # (bool) Whether or not to sign the code
 ios.codesign.allowed = false
