@@ -13,7 +13,7 @@ package.domain = dev.vocabulary
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = db, kv, png, py
+source.include_exts = db,kv,png,py
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -25,26 +25,32 @@ source.include_exts = db, kv, png, py
 #source.exclude_dirs = tests, bin, venv
 
 # (list) List of exclusions using pattern matching
+# Do not prefix with './'
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
 version = 0.4
 
+# (str) Application versioning (method 2)
+# version.regex = __version__ = ['"](.*)['"]
+# version.filename = %(source.dir)s/main.py
+
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy==2.1.0, kivymd==0.104.2, pillow, sdl2_ttf==2.0.15, sqlite3, android, requests, certifi, chardet, idna, urllib3, openssl, pandas
+requirements = python3,kivy==2.1.0,kivymd==0.104.2,pillow,sdl2_ttf==2.0.15,sqlite3,android,requests,certifi,chardet,idna,urllib3,openssl
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/img.png
+#presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/img.png
 
-# (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
+# (list) Supported orientations
+# Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
 orientation = portrait
 
 # (list) List of service to declare
@@ -88,13 +94,14 @@ android.presplash_color = #311B92
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = INTERNET
+# (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
+android.permissions = android.permission.INTERNET
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-#android.api = 30
+#android.api = 31
 
 # (int) Minimum API your APK / AAB will support.
 #android.minapi = 21
@@ -107,9 +114,6 @@ android.permissions = INTERNET
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
-
-# (bool) Use --private data storage (True) or --dir public storage (False)
-#android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
 #android.ndk_path =
@@ -156,6 +160,9 @@ android.permissions = INTERNET
 # (list) Pattern to whitelist for the whole project
 #android.whitelist =
 
+# (bool) If True, your application will be listed as a home app (launcher app)
+# android.home_app = False
+
 # (str) Path to a custom whitelist file
 #android.whitelist_src =
 
@@ -188,7 +195,7 @@ android.permissions = INTERNET
 # android.add_resources = my_icons/all-inclusive.png:drawable/all_inclusive.png
 # 2) A directory, here  'legal_icons' must contain resources of one kind
 # android.add_resources = legal_icons:drawable
-# 3) A directory, here 'legal_resources' must contain one or more directories,
+# 3) A directory, here 'legal_resources' must contain one or more directories, 
 # each of a resource kind:  drawable, xml, etc...
 # android.add_resources = legal_resources
 #android.add_resources =
@@ -207,14 +214,14 @@ android.permissions = INTERNET
 # android.add_compile_options = "sourceCompatibility = 1.8", "targetCompatibility = 1.8"
 
 # (list) Gradle repositories to add {can be necessary for some android.gradle_dependencies}
-# please enclose in double quotes
+# please enclose in double quotes 
 # e.g. android.gradle_repositories = "maven { url 'https://kotlin.bintray.com/ktor' }"
 #android.add_gradle_repositories =
 
-# (list) packaging options to add
+# (list) packaging options to add 
 # see https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.PackagingOptions.html
 # can be necessary to solve conflicts in gradle_dependencies
-# please enclose in double quotes
+# please enclose in double quotes 
 # e.g. android.add_packaging_options = "exclude 'META-INF/common.kotlin_module'", "exclude 'META-INF/*.kotlin_module'"
 #android.add_packaging_options =
 
@@ -236,6 +243,10 @@ android.permissions = INTERNET
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
+
+# (str) screenOrientation to set for the main activity.
+# Valid values can be found at https://developer.android.com/guide/topics/manifest/activity-element
+#android.manifest.orientation = fullSensor
 
 # (list) Android additional libraries to copy into libs/armeabi
 #android.add_libs_armeabi = libs/android/*.so
