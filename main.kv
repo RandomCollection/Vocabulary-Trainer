@@ -1,0 +1,430 @@
+<MDFillRoundFlatButtonOwn@MDFillRoundFlatButton>:
+    font_style: "Button"
+    size_hint: None, None
+
+<MDLabelOwn@MDLabel>:
+    markup: True
+    font_style: "Body1"
+
+<MDRaisedButtonOwn@MDRaisedButton>:
+    font_style: "Button"
+    theme_text_color: "Custom"
+    md_bg_color: 100/255, 255/255, 218/255, 1
+    text_color: 0.1/255, 0.1/255, 0.1/255, 1
+    size_hint: None, None
+
+Screen:
+
+    input: text
+
+    BoxLayout:
+
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Menu"
+            left_action_items: [["menu", lambda x: navigation_drawer.set_state("open")]]
+
+        Widget:
+
+    MDNavigationLayout:
+
+        ScreenManager:
+
+            id: screen_manager
+
+            Screen:
+
+                name: "home"
+
+                MDLabel:
+                    text: app.label_home
+                    id: home
+                    markup: True
+                    font_style: "H5"
+                    halign: "center"
+                    valign: "center"
+
+            Screen:
+
+                name: "start"
+
+                MDLabelOwn:
+                    text: app.label_counter_streak_text
+                    id: label_counter_streak_text
+                    pos_hint: {"center_x": 0.55, "center_y": 0.88}
+
+                MDLabelOwn:
+                    text: app.label_counter_streak_number
+                    id: label_counter_streak_number
+                    pos_hint: {"center_x": 0.55, "center_y": 0.855}
+
+                MDLabelOwn:
+                    text: app.label_counter_words_text
+                    id: label_counter_words_text
+                    pos_hint: {"center_x": 0.55, "center_y": 0.83}
+
+                MDLabelOwn:
+                    text: app.label_counter_words_number
+                    id: label_counter_words_number
+                    pos_hint: {"center_x": 0.55, "center_y": 0.805}
+
+                MDLabel:
+                    text: ""
+                    id: please_translate
+                    halign: "center"
+                    pos_hint: {"center_y": 0.85}
+
+                MDLabel:
+                    text: ""
+                    id: label_word_in
+                    markup: True
+                    font_style: "H6"
+                    halign: "center"
+                    pos_hint: {"center_y": 0.75}
+
+                MDTextField:
+                    hint_text: "Enter translation here"
+                    id: text
+                    pos_hint: {"center_x": 0.5, "center_y": 0.65}
+                    size_hint_x: None
+                    mode: "rectangle"
+                    width: 750
+
+                MDLabel:
+                    text: ""
+                    id: label_word_out
+                    markup: True
+                    font_style: "H6"
+                    halign: "center"
+                    pos_hint: {"center_y": 0.55}
+
+                MDFillRoundFlatButtonOwn:
+                    text: "SOLVE"
+                    pos_hint: {"center_x": 0.3, "center_y": 0.45}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.solve()
+
+                MDFillRoundFlatButtonOwn:
+                    text: "START"
+                    id: label_button_check
+                    pos_hint: {"center_x": 0.7, "center_y": 0.45}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.check()
+
+                MDFillRoundFlatButtonOwn:
+                    text: "NEXT"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.35}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.next()
+
+                MDLabelOwn:
+                    text: "All"
+                    id: label_category
+                    pos_hint: {"center_x": 0.8, "center_y": 0.15}
+
+                MDRaisedButtonOwn:
+                    text: "Category"
+                    id: button_category
+                    pos_hint: {"center_x": 0.15, "center_y": 0.15}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_release: app.dropdown_category.open()
+
+                MDLabelOwn:
+                    text: "All"
+                    id: label_level
+                    pos_hint: {"center_x": 0.8, "center_y": 0.05}
+
+                MDRaisedButtonOwn:
+                    text: "Level"
+                    id: button_level
+                    pos_hint: {"center_x": 0.15, "center_y": 0.05}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_release: app.dropdown_level.open()
+
+                MDFloatingActionButtonSpeedDial:
+                    callback: app.callback_language
+                    data: app.dict_language
+                    root_button_anim: True
+                    label_text_color: 1, 1, 1, 1
+                    label_bg_color: 100/255, 255/255, 218/255, 1
+                    bg_color_stack_button: 100/255, 255/255, 218/255, 1
+                    bg_color_root_button: 100/255, 255/255, 218/255, 1
+                    color_icon_root_button: 0.1/255, 0.1/255, 0.1/255, 1
+                    color_icon_stack_button: 0.1/255, 0.1/255, 0.1/255, 1
+
+            Screen:
+
+                name: "statistics"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size_hint: 0.95, 0.4
+                    pos_hint: {"center_x": 0.5, "center_y": 0.65}
+
+                    MDLabelOwn:
+                        text: app.label_statistics
+                        id: statistics
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    pos_hint: {"center_x": 0.93, "center_y": 0.01}
+
+                    MDLabelOwn:
+                        text: app.table_statistics
+                        id: statistics_2
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                MDFillRoundFlatButtonOwn:
+                    text: "Reset"
+                    pos_hint: {"center_x": 0.85, "center_y": 0.05}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.reset_statistics()
+
+            Screen:
+
+                name: "vocabulary"
+                on_pre_enter: app.show_vocabulary()
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    id: data_layout
+
+                    MDBoxLayout:
+                        size_hint_y: 0.1
+                        height: dp(48)
+
+            Screen:
+
+                name: "settings"
+                on_leave: app.on_leave_settings()
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size_hint: 0.95, 0.5
+                    pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+                    MDLabelOwn:
+                        text: ""
+                        id: label_settings
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                MDLabelOwn:
+                    text: app.label_sensitivity
+                    id: label_sensitivity
+                    pos_hint: {"center_x": 0.8, "center_y": 0.25}
+
+                MDRaisedButtonOwn:
+                    text: "Sensitivity"
+                    id: button_sensitivity
+                    pos_hint: {"center_x": 0.15, "center_y": 0.25}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_release: app.dropdown_sensitivity.open()
+
+                MDLabelOwn:
+                    text: app.label_sleeper
+                    id: label_sleeper
+                    pos_hint: {"center_x": 0.8, "center_y": 0.15}
+
+                MDRaisedButtonOwn:
+                    text: "Sleeper"
+                    id: button_sleeper
+                    pos_hint: {"center_x": 0.15, "center_y": 0.15}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_release: app.dropdown_sleeper.open()
+
+                MDLabelOwn:
+                    text: app.label_counter_on
+                    id: label_counter_on
+                    pos_hint: {"center_x": 0.8, "center_y": 0.05}
+
+                MDRaisedButtonOwn:
+                    text: "Counters"
+                    id: button_counter_on
+                    pos_hint: {"center_x": 0.15, "center_y": 0.05}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_release: app.dropdown_counter_on.open()
+
+                MDLabelOwn:
+                    text: ""
+                    id: label_reset_status
+                    halign: "center"
+                    pos_hint: {"center_y": 0.3}
+
+                MDFillRoundFlatButtonOwn:
+                    text: "Reset"
+                    pos_hint: {"center_x": 0.85, "center_y": 0.05}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.reset_counters()
+
+            Screen:
+
+                name: "how_to"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size_hint: 0.95, 0.8
+                    pos_hint: {"center_x": 0.5, "center_y": 0.45}
+
+                    MDLabelOwn:
+                        text: ""
+                        id: label_how_to
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+            Screen:
+
+                name: "update"
+                on_leave: app.on_leave_update()
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size_hint: 0.95, 0.8
+                    pos_hint: {"center_x": 0.5, "center_y": 0.45}
+
+                    MDLabelOwn:
+                        text: ""
+                        id: label_update
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                MDLabelOwn:
+                    text: ""
+                    id: label_update_status_start
+                    halign: "center"
+                    pos_hint: {"center_y": 0.4}
+
+                MDLabelOwn:
+                    text: ""
+                    id: label_update_status
+                    halign: "center"
+                    pos_hint: {"center_y": 0.4}
+
+                MDFillRoundFlatButtonOwn:
+                    text: "Import"
+                    pos_hint: {"center_x": 0.3, "center_y": 0.15}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.import_db()
+
+                MDFillRoundFlatButtonOwn:
+                    text: "Export"
+                    pos_hint: {"center_x": 0.7, "center_y": 0.15}
+                    width: dp(100) + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+                    on_press: app.export_db()
+
+            Screen:
+
+                name: "about"
+
+                MDLabelOwn:
+                    text: ""
+                    id: label_about
+                    halign: "center"
+                    valign: "center"
+                    on_ref_press: app.open_url(url=args[1])
+
+        MDNavigationDrawer:
+            id: navigation_drawer
+            orientation: "vertical"
+            padding: "12dp", "12dp", "12dp", "0dp"
+            spacing: "5dp"
+
+            AnchorLayout:
+                anchor_x: "left"
+                size_hint_y: None
+                height: img.height
+
+                Image:
+                    id: img
+                    size_hint: None, None
+                    size: "56dp", "56dp"
+                    source: "img.png"
+
+            MDLabel:
+                text: "Vocabulary Trainer"
+                font_style: "Button"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDLabel:
+                text: "RandomCollection"
+                font_style: "Caption"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDList:
+
+                OneLineAvatarListItem:
+                    text: "Home"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "home"
+                    IconLeftWidget:
+                        icon: "home"
+
+                OneLineAvatarListItem:
+                    text: "Start"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "start"
+                    IconLeftWidget:
+                        icon: "play"
+
+                OneLineAvatarListItem:
+                    text: "Statistics"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "statistics"
+                    IconLeftWidget:
+                        icon: "chart-bar"
+
+                OneLineAvatarListItem:
+                    text: "Vocabulary"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "vocabulary"
+                    IconLeftWidget:
+                        icon: "view-list"
+
+                OneLineAvatarListItem:
+                    text: "Settings"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "settings"
+                    IconLeftWidget:
+                        icon: "cogs"
+
+                OneLineAvatarListItem:
+                    text: "How To"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "how_to"
+                    IconLeftWidget:
+                        icon: "chat-question"
+
+                OneLineAvatarListItem:
+                    text: "Update"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "update"
+                    IconLeftWidget:
+                        icon: "cloud-refresh"
+
+                OneLineAvatarListItem:
+                    text: "About"
+                    on_press:
+                        navigation_drawer.set_state("close")
+                        screen_manager.current = "about"
+                    IconLeftWidget:
+                        icon: "information"
+
+            Widget:
